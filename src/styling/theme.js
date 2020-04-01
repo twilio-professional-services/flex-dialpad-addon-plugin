@@ -44,6 +44,11 @@ const sharedTheme = (theme) => ({
     backspace: {
       paddingTop: '5px',
       margin: '0px'
+    },
+    dialPadBtn: {
+      borderRadius: '100px',
+      padding: '10px',
+      minWidth: '0px'
     }
   })
   

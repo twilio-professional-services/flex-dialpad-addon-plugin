@@ -30,16 +30,13 @@ export const acceptInternalTask = ({
 
 }
 
-export const rejectInternalTask = ({ 
+export const rejectInternalTask = async ({ 
   manager, payload, resolve, reject 
 }) => {
     
-    payload.task._reservation.accept();
-        
-    setTimeout(() => {
-      payload.task.wrapUp();
-      payload.task.complete();
-    }, 200);
+    await payload.task._reservation.accept();
+    await payload.task.wrapUp();
+    await payload.task.complete();
  
     const taskSid = payload.task.attributes.conferenceSid;
     

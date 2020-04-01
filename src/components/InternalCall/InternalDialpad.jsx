@@ -57,9 +57,10 @@ class InternalDialpad extends React.Component {
 
     render() {       
 
-        const { classes } = this.props;
+        const { classes, manager } = this.props;
 
-        console.log()
+        const worker_contact_uri = 
+        `client:${manager.user.identity}`;
 
         return (
             <div className={classes.boxDialpad}>
@@ -74,11 +75,11 @@ class InternalDialpad extends React.Component {
                         {this.state.workerList.map((worker)=> {
                                 const { contact_uri, full_name } = worker.attributes;
 
-                                return (
+                                return contact_uri !== worker_contact_uri ? (
                                     <MenuItem value={contact_uri} key={contact_uri}>
                                         {full_name}
                                     </MenuItem>
-                                )
+                                ) : null
                             }
                         )}
                     </Select>
@@ -88,6 +89,7 @@ class InternalDialpad extends React.Component {
                             color="primary" 
                             disabled={!this.state.selectedWorker} 
                             onClick={this.makeCall}
+                            className={classes.dialPadBtn}
                         >
                             <Icon icon="Call"/>
                         </Button>
