@@ -1,5 +1,5 @@
 // your account sid
-var accountSid = 'accountSid';
+var accountSid = 'ACxxxxxxxxxxxxxxxxxxxxxxxxxxx';
 
 // set to /plugins.json for local dev
 // set to /plugins.local.build.json for testing your build
@@ -7,6 +7,11 @@ var accountSid = 'accountSid';
 var pluginServiceUrl = '/plugins.json';
 
 var appConfig = {
+  serviceBaseUrl: "",
+  workflowSid:  "",
+  taskQueueSid:  "",
+  taskChannelSid: "",
+  twilioNumber: "",
   pluginService: {
     enabled: true,
     url: pluginServiceUrl,
@@ -14,7 +19,5 @@ var appConfig = {
   sso: {
     accountSid: accountSid
   },
-  ytica: false,
   logLevel: 'debug',
-  showSupervisorDesktopView: true,
 };
