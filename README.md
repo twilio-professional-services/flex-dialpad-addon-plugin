@@ -110,6 +110,21 @@ and then
 - taskChannelSid: the voice channel SID 
 - twilioNumber: the twilio number to make outbound calls
 
+  **Note**: when deploying this plugin, you need to send these variables through the UI Configuration API as following. If you need more information about it, please refer to this [documentation](https://www.twilio.com/docs/flex/ui-configuration-customization):
+
+  ```
+  curl https://flex-api.twilio.com/v1/Configuration -X POST -u ACxx:auth_token \
+    -H 'Content-Type: application/json' \
+    -d '{
+        "account_sid": "ACxx",
+        "serviceBaseUrl": "<value>",
+        "workflowSid":  "<value>",
+        "taskQueueSid":  "<value>",
+        "taskChannelSid": "<value>",
+        "twilioNumber": "<value>"
+    }'
+  ```
+
 4.  run `npm install`
 
 5. copy ./serverless/.env.sample to ./serverless/.env and populate the appropriate environment variables.
