@@ -1,3 +1,5 @@
+import { env } from '../DialpadPlugin';
+
 const request = async (path, manager, params) =>{
     const body = {
         ...params,
@@ -12,7 +14,7 @@ const request = async (path, manager, params) =>{
         }
     };
 
-    const resp = await fetch(`${manager.configuration.serviceBaseUrl}/${path}`, options)
+    const resp = await fetch(`${env.serviceBaseUrl}/${path}`, options)
     return (await resp.json())
 }
 

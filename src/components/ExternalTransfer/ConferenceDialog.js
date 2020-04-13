@@ -8,6 +8,8 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import TextField from '@material-ui/core/TextField';
 import ConferenceService from '../../helpers/ConferenceService';
+import { env } from '../../DialpadPlugin';
+
 
 class ConferenceDialog extends React.Component {
   state = {
@@ -55,7 +57,7 @@ class ConferenceDialog extends React.Component {
     if (this.props.phoneNumber) {
       from = this.props.phoneNumber
     } else {
-      from = Manager.getInstance().configuration.twilioNumber;
+      from = env.twilioNumber;
     }
 
     // Adding entered number to the conference

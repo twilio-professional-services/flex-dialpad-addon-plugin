@@ -73,9 +73,16 @@ class InternalDialpad extends React.Component {
                         isClearable
                     >
                         {this.state.workerList.map((worker)=> {
+                                const { activity_name } = worker;
                                 const { contact_uri, full_name } = worker.attributes;
 
-                                return contact_uri !== worker_contact_uri ? (
+                                console.log("######")
+                                console.log(worker);
+
+                                return (
+                                    contact_uri !== worker_contact_uri && 
+                                    activity_name !== "Offline" 
+                                ) ? (
                                     <MenuItem value={contact_uri} key={contact_uri}>
                                         {full_name}
                                     </MenuItem>

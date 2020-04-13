@@ -5,6 +5,7 @@ import reducers, { namespace } from './states';
 import registerCustomActions from './customActions';
 import { loadExternalTransferInterface } from './components/ExternalTransfer';
 import { loadInternalCallInterface } from './components/InternalCall';
+import environmentVariables from './env';
 
 const PLUGIN_NAME = 'DialpadPlugin';
 
@@ -14,7 +15,7 @@ export default class DialpadPlugin extends FlexPlugin {
   }
 
   init(flex, manager) {
-
+  
     loadExternalTransferInterface.bind(this)(flex, manager)
 
     loadInternalCallInterface.bind(this)(flex, manager)
@@ -33,4 +34,8 @@ export default class DialpadPlugin extends FlexPlugin {
 
     manager.store.addReducer(namespace, reducers);
   }
+}
+
+export const env = {
+  ...environmentVariables
 }

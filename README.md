@@ -104,19 +104,23 @@ and then
 3. Copy ./public/appConfig.example.js to ./public/appConfig.js and set the following:
 
 - account SID
+
+4. Copy ./src/env.example.js to ./src/env.js and set the following:
+
 - serviceBaseUrl: your Twilio Functions base url (this will be available after you deploy your functions)
 - workflowSid: workflow that outbound tasks will be sent to
 - taskQueueSid: task queue that outbound tasks will be sent to
 - taskChannelSid: the voice channel SID 
 - twilioNumber: the twilio number to make outbound calls
 
-4.  run `npm install`
+5.  run `npm install`
 
-5. copy ./serverless/.env.sample to ./serverless/.env and populate the appropriate environment variables.
+6. copy ./serverless/.env.sample to ./serverless/.env and populate the appropriate environment variables.
 
-6.  cd into ./serverless/ then run `npm install` and then `twilio serverless:deploy` (optionally you can run locally with `twilio serverless:start --ngrok=""`
+7.  cd into ./serverless/ then run `npm install` and then `twilio serverless:deploy` (optionally you can run locally with `twilio serverless:start --ngrok=""`
 
-8. cd back to the root folder and run `npm start` to run locally or `npm run-script build` and deploy the generated ./build/plugin-dialpad.js to [twilio assests](https://www.twilio.com/console/assets/public) to include plugin with hosted Flex
+8. cd back to the root folder and run `npm start` to run locally or `npm run build` and deploy the generated ./build/plugin-dialpad.js to [twilio assests](https://www.twilio.com/console/assets/public) to include plugin with hosted Flex. Another option to deploy your plugin is to use `npm run deploy` which will use the serverless platform to store your plugin. If you want to send this plugin for different projects, please use `TWILIO_ACCOUNT_SID=ACxxxxxxxx TWILIO_AUTH_TOKEN=auth_token npm run deploy
+`
 
 # Known issues
 
