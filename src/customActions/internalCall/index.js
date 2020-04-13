@@ -1,4 +1,5 @@
 import { request } from '../../helpers/request';
+import { env } from '../../DialpadPlugin';
 
 export const isInternalCall = payload => 
     payload.task.attributes.client_call === true
@@ -11,7 +12,7 @@ export const acceptInternalTask = ({
     if (typeof(reservation.task.attributes.conference) !== 'undefined') {
 
         reservation.call(reservation.task.attributes.from,
-          `${manager.configuration.serviceBaseUrl}/internal-call/agent-join-conference?conferenceName=${reservation.task.attributes.conference.friendlyName}`, {
+          `${env.serviceBaseUrl}/internal-call/agent-join-conference?conferenceName=${reservation.task.attributes.conference.friendlyName}`, {
             accept: true
           }
         )
@@ -20,7 +21,7 @@ export const acceptInternalTask = ({
 
         reservation.call(
             reservation.task.attributes.from,
-            `${manager.configuration.serviceBaseUrl}/internal-call/agent-outbound-join?taskSid=${payload.task.taskSid}`, 
+            `${env.serviceBaseUrl}/internal-call/agent-outbound-join?taskSid=${payload.task.taskSid}`, 
             {
             accept: true
             }
