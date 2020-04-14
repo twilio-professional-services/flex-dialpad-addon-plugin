@@ -12,14 +12,13 @@ const request = async (path, manager, params) =>{
         }
     };
 
-    const serviceBaseUrl = 
-        manager.configuration.attributes.serviceBaseUrl || 
-        manager.serviceConfiguration.attributes.serviceBaseUrl;
+    const { serviceBaseUrl } = 
+        manager.configuration.attributes || 
+        manager.serviceConfiguration.attributes;
 
     const resp = await fetch(`${serviceBaseUrl}/${path}`, options)
     return (await resp.json())
 }
-
 
 export {
     request
