@@ -13,9 +13,9 @@ export const makeInternalCall = ({
         queue_sid
     } = manager.serviceConfiguration.outbound_call_flows.default;
 
-    const taskChannelSid = 
-        manager.configuration.attributes.taskChannelSid || 
-        manager.serviceConfiguration.attributes.taskChannelSid;
+    const { taskChannelSid } = 
+        manager.configuration.attributes || 
+        manager.serviceConfiguration.attributes;
 
     const worker_contact_uri = 
         `client:${manager.user.identity}`;

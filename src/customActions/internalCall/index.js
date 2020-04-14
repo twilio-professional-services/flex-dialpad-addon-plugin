@@ -8,9 +8,9 @@ export const acceptInternalTask = ({
   reservation, manager, payload 
 }) => {
 
-    const serviceBaseUrl = 
-      manager.configuration.attributes.serviceBaseUrl || 
-      manager.serviceConfiguration.attributes.serviceBaseUrl;
+    const { serviceBaseUrl } = 
+      manager.configuration.attributes || 
+      manager.serviceConfiguration.attributes;
 
     if (typeof(reservation.task.attributes.conference) !== 'undefined') {
 
