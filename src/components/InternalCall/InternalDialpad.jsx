@@ -76,9 +76,6 @@ class InternalDialpad extends React.Component {
                                 const { activity_name } = worker;
                                 const { contact_uri, full_name } = worker.attributes;
 
-                                console.log("######")
-                                console.log(worker);
-
                                 return (
                                     contact_uri !== worker_contact_uri && 
                                     activity_name !== "Offline" 
