@@ -1,4 +1,5 @@
 import { request } from '../../helpers/request';
+import { getAttributes } from '../../helpers/configuration';
 
 export const isInternalCall = payload => 
     payload.task.attributes.client_call === true
@@ -8,9 +9,7 @@ export const acceptInternalTask = ({
   reservation, manager, payload 
 }) => {
 
-    const { serviceBaseUrl } = 
-      manager.configuration.attributes || 
-      manager.serviceConfiguration.attributes;
+    const { serviceBaseUrl } = getAttributes(manager);
 
     if (typeof(reservation.task.attributes.conference) !== 'undefined') {
 

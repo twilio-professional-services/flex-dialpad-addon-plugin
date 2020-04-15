@@ -1,5 +1,6 @@
 import React from "react";
 import InternalDialpad from './InternalDialpad';
+import { getAttributes } from '../../helpers/configuration';
 
 export const loadInternalCallInterface = (flex, manager) => {
     flex.OutboundDialerPanel.Content.add(<InternalDialpad key="select-dialpad" flex={flex} manager={manager} />)
@@ -13,9 +14,7 @@ export const makeInternalCall = ({
         queue_sid
     } = manager.serviceConfiguration.outbound_call_flows.default;
 
-    const { taskChannelSid } = 
-        manager.configuration.attributes || 
-        manager.serviceConfiguration.attributes;
+    const { taskChannelSid } = getAttributes(manager);
 
     const worker_contact_uri = 
         `client:${manager.user.identity}`;
