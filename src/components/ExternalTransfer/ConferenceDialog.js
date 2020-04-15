@@ -8,7 +8,6 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import TextField from '@material-ui/core/TextField';
 import ConferenceService from '../../helpers/ConferenceService';
-import { getAttributes } from '../../helpers/configuration';
 
 class ConferenceDialog extends React.Component {
   state = {
