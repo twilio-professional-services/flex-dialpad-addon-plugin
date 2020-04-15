@@ -7,11 +7,10 @@ var accountSid = 'ACxxxxxxxxxxxxxxxxxxxxxxxxxxx';
 var pluginServiceUrl = '/plugins.json';
 
 var appConfig = {
-  serviceBaseUrl: "",
-  workflowSid:  "",
-  taskQueueSid:  "",
-  taskChannelSid: "",
-  twilioNumber: "",
+  attributes: {
+    serviceBaseUrl: "",
+    taskChannelSid: ""
+  },
   pluginService: {
     enabled: true,
     url: pluginServiceUrl,
