@@ -1,3 +1,6 @@
+import { getAttributes } from './configuration';
+
+
 const request = async (path, manager, params) =>{
     const body = {
         ...params,
@@ -12,9 +15,7 @@ const request = async (path, manager, params) =>{
         }
     };
 
-    const { serviceBaseUrl } = 
-        manager.configuration.attributes || 
-        manager.serviceConfiguration.attributes;
+    const { serviceBaseUrl } = getAttributes(manager);
 
     const resp = await fetch(`${serviceBaseUrl}/${path}`, options)
     return (await resp.json())
