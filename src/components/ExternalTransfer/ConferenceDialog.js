@@ -45,20 +45,8 @@ class ConferenceDialog extends React.Component {
     this.closeDialog();
   }
 
-  handleExternalNumber = number => {
-    let to = number; 
-
-    const { externalSIP } = getAttributes(Manager.getInstance());
-
-    if(number.length <= 4 && externalSIP) {
-      to = externalSIP.replace(/{{.*}}/, number);
-    }
-
-    return to;
-  }
-
   addConferenceParticipant = async () => {
-    const to = this.handleExternalNumber(this.state.conferenceTo);
+    const to = this.state.conferenceTo;
 
     const { task, task: { taskSid } } = this.props;
     const conference = task && (task.conference || {});

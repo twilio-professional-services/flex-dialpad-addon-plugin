@@ -11,8 +11,8 @@ export const loadExternalTransferInterface = (flex, manager) => {
 
     var translationStrings = {
 		DIALPADExternalTransferHoverOver: "Add Conference Participant",
-		DIALPADExternalTransferPhoneNumberPopupHeader: "Enter phone number or extension to add to the conference",
-		DIALPADExternalTransferPhoneNumberPopupTitle: "Phone Number or Extension",
+		DIALPADExternalTransferPhoneNumberPopupHeader: "Enter phone number to add to the conference",
+		DIALPADExternalTransferPhoneNumberPopupTitle: "Phone Number",
 		DIALPADExternalTransferPhoneNumberPopupCancel: "Cancel",
 		DIALPADExternalTransferPhoneNumberPopupDial: "Dial"
 	  }
