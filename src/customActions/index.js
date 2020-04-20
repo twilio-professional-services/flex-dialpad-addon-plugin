@@ -4,45 +4,33 @@ import { kickExternalTransferParticipant } from './externalTransfer';
 
 export default (manager) => {
 
-  Actions.replaceAction('AcceptTask', (payload, original) => {
-    return new Promise((resolve, reject) => {
+  Actions.addListener('beforeAcceptTask', (payload, abortFunction) => {
 
       const reservation = payload.task.sourceObject;
 
       if(isInternalCall(payload)){
+        
+        abortFunction();
 
         acceptInternalTask({ reservation, manager, payload });
-
-      } else {
         
-        original(payload);
-      
-      }
-
-      resolve();
-
-    });
+      } 
 
   })
 
-  Actions.replaceAction('RejectTask', (payload, original) => {
-    return new Promise((resolve, reject) => {
+  Actions.addListener('beforeRejectTask', (payload, abortFunction) => {
 
       if (isInternalCall(payload)) {
 
-        rejectInternalTask({ manager, payload, resolve, reject });
+        abortFunction();
+
+        rejectInternalTask({ manager, payload });
   
-      } else {
+      } 
 
-        original(payload);
-        resolve();
-
-      }
-
-    })
   })
 
-  Actions.replaceAction('HoldCall', (payload, original) => {
+  const holdCall = (payload, hold) => {
     return new Promise((resolve, reject) => {
       
       const task = payload.task;
@@ -50,60 +38,41 @@ export default (manager) => {
       if (isInternalCall(payload)) {
         
         toggleHoldInternalCall({ 
-          payload, original, task, manager, hold: true, resolve, reject 
+          task, manager, hold, resolve, reject 
         });
         
       } else {
-        
-        original(payload)
+
         resolve();
        
       }
 
     })
+  }
+
+  Actions.addListener('beforeHoldCall', (payload) => {
+    return holdCall(payload, true)
   })
 
-  Actions.replaceAction('UnholdCall', (payload, original) => {
-    return new Promise((resolve, reject) => {
-
-      const task = payload.task;
-
-      if (isInternalCall(payload)) {
-        
-        toggleHoldInternalCall({ 
-          payload, original, task, manager, hold: false, resolve, reject 
-        });
-        
-      } else {
-        
-        original(payload)
-        resolve();
-        
-      }
-    })
+  Actions.addListener('beforeUnholdCall', (payload) => {
+    return holdCall(payload, false)
   })
 
-	Actions.replaceAction('KickParticipant', (payload, original) => {
-      return new Promise((resolve, reject) => {
+	Actions.addListener('beforeKickParticipant', (payload, abortFunction) => {
 
-        const { participantType } = payload;
-        
-        if (
-          participantType === "transfer" || 
-          participantType === 'worker'
-        ) {
-            
-          original(payload);
-          resolve();
-
-        } else  {
-
-          kickExternalTransferParticipant(payload);
-          resolve();
-
-        }
+      const { participantType } = payload;
       
-    })
-  });
+      if (
+        participantType !== "transfer" &&
+        participantType !== 'worker'
+      ) {
+        
+        abortFunction();
+
+        kickExternalTransferParticipant(payload);
+    
+      }
+    
+  })
 
 }

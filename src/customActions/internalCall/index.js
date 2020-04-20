@@ -34,7 +34,7 @@ export const acceptInternalTask = ({
 }
 
 export const rejectInternalTask = async ({ 
-  manager, payload, resolve, reject 
+  manager, payload 
 }) => {
     
     await payload.task._reservation.accept();
@@ -48,13 +48,11 @@ export const rejectInternalTask = async ({
     }).then(response => {
       
       console.log('Outbound call has been placed into wrapping');
-      resolve(response);
 
     })
     .catch(error => {
 
       console.log(error);
-      reject(error);
 
     });
 
@@ -62,7 +60,7 @@ export const rejectInternalTask = async ({
 
 
 export const toggleHoldInternalCall = ({ 
-  payload, original, task, manager, hold, resolve, reject
+  task, manager, hold, resolve, reject
 }) => {
 
   const conference = task.attributes.conference ? 
@@ -77,7 +75,6 @@ export const toggleHoldInternalCall = ({
     hold
   }).then(response => {
     
-    original(payload);
     resolve(response);
 
   })
