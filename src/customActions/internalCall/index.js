@@ -1,20 +1,19 @@
 import { request } from '../../helpers/request';
-import { getAttributes } from '../../helpers/configuration';
 
 export const isInternalCall = payload => 
     payload.task.attributes.client_call === true
 
 
 export const acceptInternalTask = ({ 
-  reservation, manager, payload 
+  reservation, payload 
 }) => {
 
-    const { serviceBaseUrl } = getAttributes(manager);
+    const { REACT_APP_SERVICE_BASE_URL } = process.env;
 
     if (typeof(reservation.task.attributes.conference) !== 'undefined') {
 
         reservation.call(reservation.task.attributes.from,
-          `${serviceBaseUrl}/internal-call/agent-join-conference?conferenceName=${reservation.task.attributes.conference.friendlyName}`, {
+          `${REACT_APP_SERVICE_BASE_URL}/internal-call/agent-join-conference?conferenceName=${reservation.task.attributes.conference.friendlyName}`, {
             accept: true
           }
         )
@@ -23,7 +22,7 @@ export const acceptInternalTask = ({
 
         reservation.call(
             reservation.task.attributes.from,
-            `${serviceBaseUrl}/internal-call/agent-outbound-join?taskSid=${payload.task.taskSid}`, 
+            `${REACT_APP_SERVICE_BASE_URL}/internal-call/agent-outbound-join?taskSid=${payload.task.taskSid}`, 
             {
             accept: true
             }

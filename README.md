@@ -101,26 +101,13 @@ and then
 
 2. Clone this repository
 
-3. Copy ./public/appConfig.example.js to ./public/appConfig.js and set the following:
+3. Copy .env.example to .env.development and to .env.production and set the following variables:
 
-- account SID
-- Inside attributes: 
-    - serviceBaseUrl: your Twilio Functions base url (this will be available after you deploy your functions). In local development environment, it could be your localhost base url. 
-    - taskChannelSid: the voice channel SID 
+    - REACT_APP_SERVICE_BASE_URL: your Twilio Functions base url (this will be available after you deploy your functions). In local development environment, it could be your localhost base url. 
+    - REACT_APP_TASK_CHANNEL_SID: the voice channel SID 
 
-  **Note**: when deploying this plugin, you need to send these variables through the UI Configuration API as following. If you need more information about it, please refer to this [documentation](https://www.twilio.com/docs/flex/ui-configuration-customization):
-
-  ```
-  curl https://flex-api.twilio.com/v1/Configuration -X POST -u ACxx:auth_token \
-    -H 'Content-Type: application/json' \
-    -d '{
-        "account_sid": "ACxx",
-        "attributes": {
-            "serviceBaseUrl": "<value>",
-            "taskChannelSid": "<value>"
-        }
-    }'
-  ```
+  **Note**: Remember that both .env.development and .env.production is for front-end use so do not add any type of key/secret variable to them. When developing, the .env.development is used while the .env.production is used when building and deploying the plugin. Also, just variables starting with the name *REACT_APP_* will work.
+  
 
 4.  run `npm install`
 

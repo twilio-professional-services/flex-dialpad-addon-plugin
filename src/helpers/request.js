@@ -1,6 +1,3 @@
-import { getAttributes } from './configuration';
-
-
 const request = async (path, manager, params) =>{
     const body = {
         ...params,
@@ -15,9 +12,9 @@ const request = async (path, manager, params) =>{
         }
     };
 
-    const { serviceBaseUrl } = getAttributes(manager);
+    const { REACT_APP_SERVICE_BASE_URL } = process.env;
 
-    const resp = await fetch(`${serviceBaseUrl}/${path}`, options)
+    const resp = await fetch(`${REACT_APP_SERVICE_BASE_URL}/${path}`, options)
     return (await resp.json())
 }
 

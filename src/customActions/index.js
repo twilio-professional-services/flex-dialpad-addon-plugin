@@ -12,7 +12,7 @@ export default (manager) => {
         
         abortFunction();
 
-        acceptInternalTask({ reservation, manager, payload });
+        acceptInternalTask({ reservation, payload });
         
       } 
 

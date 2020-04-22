@@ -67,4 +67,5 @@ build/
 
 *.DS_Store
 
-env.js
+.env.development
+.env.production
