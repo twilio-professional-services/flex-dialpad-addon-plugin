@@ -123,7 +123,7 @@ and then
 2. When in an external transfer, the hold/unhold button is executing these actions on the first participant and not on the correct one.
 3. When in an agent-to-agent call, an external transfer is done correctly but the UI does not reflect what is going on.
 
-# Old issues fixed 
+# Old issues 
 
 **Note**: If you are suffering from any of the following issues, please update your plugin with the last version of this repository. 
 
