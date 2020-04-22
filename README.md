@@ -105,6 +105,7 @@ and then
 
     - REACT_APP_SERVICE_BASE_URL: your Twilio Functions base url (this will be available after you deploy your functions). In local development environment, it could be your localhost base url. 
     - REACT_APP_TASK_CHANNEL_SID: the voice channel SID 
+    - REACT_APP_EXTERNAL_SIP: the SIP endpoint to call when a number with less than 4 digits is added as a external transfer. This 4 digits max number should represent your resource number in the other provider and it will replace any placeholder with the format `{{<any_string>}}` in the SIP endpoint. 
 
   **Note**: Remember that both .env.development and .env.production is for front-end use so do not add any type of key/secret variable to them. When developing, the .env.development is used while the .env.production is used when building and deploying the plugin. Also, just variables starting with the name *REACT_APP_* will work.
   
