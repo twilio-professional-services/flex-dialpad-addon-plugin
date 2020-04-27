@@ -128,4 +128,4 @@ and then
 **Note**: If you are suffering from any of the following issues, please update your plugin with the last version of this repository. 
 
 1. In the first versions, the environment variables were set by the UI Configuration (please refer to this [documentation](https://www.twilio.com/docs/flex/ui/configuration)) but it was overriding some other variables with no relation to this plugin. Because of that, some features inside Flex were breaking. Now, there are two files (.env.development and .env.production) that gather all the environment variables. 
-2. Before, the worker's contact_uri was extracted from `manager.user.identity` which has its problems depending on its format. It is now being extract from `manager.workerClient.attributes.contact_url` directly. 
+2. Before, the worker's contact_uri was extracted from `manager.user.identity` which has its problems depending on its format. It is now being extract from `manager.workerClient.attributes.contact_url` directly.  (Thanks to [@hgs-berlee](https://github.com/hgs-berlee) who pointed that out and suggested this solution) 
