@@ -59,8 +59,8 @@ class InternalDialpad extends React.Component {
 
         const { classes, manager } = this.props;
 
-        const worker_contact_uri = 
-        `client:${manager.user.identity}`;
+        const { contact_uri: worker_contact_uri }  = 
+            manager.workerClient.attributes;
 
         return (
             <div className={classes.boxDialpad}>

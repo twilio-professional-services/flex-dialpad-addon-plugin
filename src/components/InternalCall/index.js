@@ -15,12 +15,11 @@ export const makeInternalCall = ({
 
     const { REACT_APP_TASK_CHANNEL_SID: taskChannelSid } = process.env;
 
-    const worker_contact_uri = 
-        `client:${manager.user.identity}`;
+    const { contact_uri } = manager.workerClient.attributes;
 
     manager.workerClient.createTask(
         selectedWorker, 
-        worker_contact_uri, 
+        contact_uri, 
         workflow_sid, 
         queue_sid,
         {
@@ -29,8 +28,8 @@ export const makeInternalCall = ({
                 direction: 'outbound',
                 name: workerList.find(worker => 
                     worker.attributes.contact_uri === selectedWorker).friendly_name,
-                from: worker_contact_uri,
-                targetWorker: worker_contact_uri,
+                from: contact_uri,
+                targetWorker: contact_uri,
                 autoAnswer: 'true',
                 client_call: true
             },
