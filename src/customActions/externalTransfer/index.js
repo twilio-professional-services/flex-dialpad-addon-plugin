@@ -3,7 +3,10 @@ import ConferenceService from '../../helpers/ConferenceService';
 export const kickExternalTransferParticipant = (payload) => {
     const { task, targetSid } = payload;
 
-    const conference = task.attributes.conference.sid;
+    const conference = task.attributes.conference ? 
+        task.attributes.conference.sid : 
+        task.conference.conferenceSid;
+
     const participantSid = targetSid;
 
     console.log(`Removing participant ${participantSid} from conference`);

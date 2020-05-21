@@ -47,9 +47,12 @@ class ConferenceDialog extends React.Component {
   addConferenceParticipant = async () => {
     const to = this.state.conferenceTo;
 
-    const { task, task: { taskSid } } = this.props;
+    const { task } = this.props;
     const conference = task && (task.conference || {});
     const { conferenceSid } = conference;
+
+    const mainConferenceSid = task.attributes.conference ? 
+      task.attributes.conference.sid : conferenceSid;
 
     let from;
     if (this.props.phoneNumber) {
@@ -62,8 +65,10 @@ class ConferenceDialog extends React.Component {
     console.log(`Adding ${to} to conference`);
     let participantCallSid;
     try {
-      participantCallSid = await ConferenceService.addParticipant(taskSid, from, to);
-      ConferenceService.addConnectingParticipant(conferenceSid, participantCallSid, 'unknown');
+
+      participantCallSid = await ConferenceService.addParticipant(mainConferenceSid, from, to);
+      ConferenceService.addConnectingParticipant(mainConferenceSid, participantCallSid, 'unknown');
+
     } catch (error) {
       console.error('Error adding conference participant:', error);
     }
