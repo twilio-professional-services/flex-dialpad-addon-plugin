@@ -10,6 +10,7 @@ import {
 } from '@twilio/flex-ui';
 
 const ActionsContainer = styled('div')`
+  min-width: 88px;
   margin-top: 10px;
   button {
       width: 36px;
