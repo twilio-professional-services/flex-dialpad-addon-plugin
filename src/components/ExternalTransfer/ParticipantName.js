@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import styled from '@emotion/styled';
-import { withTheme } from '@twilio/flex-ui';
+import { Manager, withTheme } from '@twilio/flex-ui';
+import { request } from '../../helpers/request';
 
 const Name = styled('div')`
   font-size: 14px;
@@ -34,8 +35,18 @@ class ParticipantName extends React.Component {
       return;
     }
 
-    // Shouldn't be unknown if conference state is synchronized
-    this.setState({ name: participant.worker ? participant.worker.fullName : 'unknown' });
+    if (participant.participantType === 'unknown') {
+      request('external-transfer/get-call-properties', Manager.getInstance(), {
+        callSid: participant.callSid
+      }).then(response => {
+        if (response) {
+          const name = (response && response.to) || 'unknown';
+          this.setState({ name });
+        }
+      });
+    } else {
+      this.setState({ name: participant.worker ? participant.worker.fullName : 'unknown' });
+    }
   }
 
   render() {
