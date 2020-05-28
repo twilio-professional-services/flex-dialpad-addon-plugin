@@ -21,16 +21,16 @@
   "dependencies": {
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
-    "craco-config-flex-plugin": "^3.4.3",
+    "craco-config-flex-plugin": "^3.10.1",
     "env-cmd": "^10.1.0",
-    "flex-plugin": "^3.0.0",
-    "flex-plugin-scripts": "^3.4.3",
+    "flex-plugin": "^3.5.0",
+    "flex-plugin-scripts": "^3.11.0",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
-    "react-scripts": "^3.4.0"
+    "react-scripts": "^3.4.1"
   },
   "devDependencies": {
-    "@twilio/flex-ui": "^1.18.0",
+    "@twilio/flex-ui": "^1.19.0",
     "babel-polyfill": "^6.26.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
