@@ -11,6 +11,23 @@ class ConferenceService {
 
   manager = Manager.getInstance();
 
+  _toggleParticipantHold = (conference, participantSid, hold) => {
+    return new Promise((resolve, reject) => {
+
+      request('external-transfer/hold-conference-participant', this.manager, {
+        conference,
+        participant: participantSid,
+        hold
+      }).then(response => {
+        console.log(`${hold ? 'Hold' : 'Unhold'} successful for participant`, participantSid);
+        resolve();
+      }).catch(error => {
+        console.error(`Error ${hold ? 'holding' : 'unholding'} participant ${participantSid}\r\n`, error);
+        reject(error);
+      })
+    })
+  }
+
   setEndConferenceOnExit = (conference, participantSid, endConferenceOnExit) => {
     return new Promise((resolve, reject) => {
 
@@ -85,6 +102,14 @@ class ConferenceService {
     });
     console.log('Updating conferences:', conferences);
     dispatch({ type: 'CONFERENCE_MULTIPLE_UPDATE', payload: { conferences } });
+  }
+
+  holdParticipant = (conference, participantSid) => {
+    return this._toggleParticipantHold(conference, participantSid, true);
+  }
+
+  unholdParticipant = (conference, participantSid) => {
+    return this._toggleParticipantHold(conference, participantSid, false);
   }
 
   removeParticipant = (conference, participantSid) => {

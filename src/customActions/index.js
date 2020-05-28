@@ -1,6 +1,7 @@
 import { Actions } from '@twilio/flex-ui';
 import { acceptInternalTask, rejectInternalTask, isInternalCall, toggleHoldInternalCall } from './internalCall';
 import { kickExternalTransferParticipant } from './externalTransfer';
+import ConferenceService from '../helpers/ConferenceService';
 
 export default (manager) => {
 
@@ -57,6 +58,32 @@ export default (manager) => {
   Actions.addListener('beforeUnholdCall', (payload) => {
     return holdCall(payload, false)
   })
+
+  Actions.addListener('beforeHoldParticipant', (payload, abortFunction) => {
+    const { participantType, targetSid: participantSid, task } = payload;
+
+    if (participantType !== 'unknown') {
+      return;
+    }
+
+    const { conferenceSid } = task.conference;
+    abortFunction();
+    console.log('Holding participant', participantSid);
+    return ConferenceService.holdParticipant(conferenceSid, participantSid);
+  });
+
+  Actions.addListener('beforeUnholdParticipant', (payload, abortFunction) => {
+    const { participantType, targetSid: participantSid, task } = payload;
+
+    if (participantType !== 'unknown') {
+      return;
+    }
+
+    const { conferenceSid } = task.conference;
+    abortFunction();
+    console.log('Holding participant', participantSid);
+    return ConferenceService.unholdParticipant(conferenceSid, participantSid);
+  });
 
 	Actions.addListener('beforeKickParticipant', (payload, abortFunction) => {
 
