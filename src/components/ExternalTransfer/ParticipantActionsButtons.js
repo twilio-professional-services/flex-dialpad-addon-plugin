@@ -86,7 +86,7 @@ class ParticipantActionsButtons extends React.Component {
     const { participant, theme, task } = this.props;
 
     const holdParticipantTooltip = participant.onHold
-      ? 'Hold Participant' : 'Unhold Participant';
+      ? 'Unhold Participant' : 'Hold Participant';
     const kickParticipantTooltip = 'Remove Participant';
 
     // The name of the hold icons changed in Flex 1.11.0 to HoldOff.
