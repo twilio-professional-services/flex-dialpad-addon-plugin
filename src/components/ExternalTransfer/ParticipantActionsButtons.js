@@ -20,6 +20,7 @@ const ActionsContainer = styled('div')`
 `;
 
 const ActionsContainerListItem = styled('div')`
+  min-width: 88px;
   button {
     width: 32px;
     height: 32px;
