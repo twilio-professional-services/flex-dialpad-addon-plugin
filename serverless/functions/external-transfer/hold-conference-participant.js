@@ -15,7 +15,8 @@ exports.handler = TokenValidator(async (context, event, callback) => {
 
   const client = context.getTwilioClient();
 
-  const participantsResponse = await client.conferences(conference)
+  const participantsResponse = await client
+    .conferences(conference)
     .participants(participant)
     .update({
       hold,
@@ -24,8 +25,8 @@ exports.handler = TokenValidator(async (context, event, callback) => {
   console.log(`Participant ${participant} updated in conference \
   ${conference}. Participant response properties:`);
 
-  Object.keys(response.body).forEach(key => {
-    console.log(`  ${key}:`, response.body[key]);
+  Object.keys(participantsResponse).forEach(key => {
+    console.log(`  ${key}:`, participantsResponse[key]);
   });
 
   callback(null, assets.response("json", participantsResponse));
