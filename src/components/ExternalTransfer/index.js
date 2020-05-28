@@ -35,13 +35,14 @@ export const loadExternalTransferInterface = (flex, manager) => {
 	/>, { sortOrder: 999 });
 
 	const isUnknownParticipant = props => props.participant.participantType === 'unknown';
+	const isNotTransferParticipant = props => props.participant.participantType !== 'transfer';
 
 	// This section is for the full width ParticipantCanvas
-	flex.ParticipantCanvas.Content.remove('actions');
+	flex.ParticipantCanvas.Content.remove('actions', { if: isNotTransferParticipant });
 	flex.ParticipantCanvas.Content.add(
 		<ParticipantActionsButtons
 			key="custom-actions"
-		/>, { sortOrder: 10 }
+		/>, { sortOrder: 10, if: isNotTransferParticipant }
 	);
 	flex.ParticipantCanvas.Content.remove('name', { if: isUnknownParticipant });
 	flex.ParticipantCanvas.Content.add(
@@ -65,11 +66,11 @@ export const loadExternalTransferInterface = (flex, manager) => {
 				key="custom-statusContainer"
 			/>, { sortOrder: 1 }
 		);
-		flex.ParticipantCanvas.ListItem.Content.remove('actions');
+		flex.ParticipantCanvas.ListItem.Content.remove('actions', { if: isNotTransferParticipant });
 		flex.ParticipantCanvas.ListItem.Content.add(
 			<ParticipantActionsButtons
 				key="custom-actions"
-			/>, { sortOrder: 10 }
+			/>, { sortOrder: 10, if: isNotTransferParticipant }
 		);
 	}
 }
