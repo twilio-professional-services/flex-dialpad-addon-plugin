@@ -79,9 +79,10 @@ export default (manager) => {
       return;
     }
 
+    console.log('Holding participant', participantSid);
+    
     const { conferenceSid } = task.conference;
     abortFunction();
-    console.log('Holding participant', participantSid);
     return ConferenceService.unholdParticipant(conferenceSid, participantSid);
   });
 
