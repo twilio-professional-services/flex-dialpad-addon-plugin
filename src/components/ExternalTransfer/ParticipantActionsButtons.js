@@ -10,6 +10,7 @@ import {
 } from '@twilio/flex-ui';
 
 const ActionsContainer = styled('div')`
+  min-width: 88px;
   margin-top: 10px;
   button {
       width: 36px;
@@ -20,6 +21,7 @@ const ActionsContainer = styled('div')`
 `;
 
 const ActionsContainerListItem = styled('div')`
+  min-width: 88px;
   button {
     width: 32px;
     height: 32px;
@@ -86,7 +88,7 @@ class ParticipantActionsButtons extends React.Component {
     const { participant, theme, task } = this.props;
 
     const holdParticipantTooltip = participant.onHold
-      ? 'Hold Participant' : 'Unhold Participant';
+      ? 'Unhold Participant' : 'Hold Participant';
     const kickParticipantTooltip = 'Remove Participant';
 
     // The name of the hold icons changed in Flex 1.11.0 to HoldOff.

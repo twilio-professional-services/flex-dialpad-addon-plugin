@@ -29,24 +29,24 @@ class ParticipantName extends React.Component {
 
   componentDidMount() {
     const { participant, task } = this.props;
-    const { callSid } = participant;
 
     if (participant.participantType === 'customer') {
-      this.setState({ name: task.attributes.name });
+      this.setState({ name: task.attributes.outbound_to || task.attributes.name });
       return;
     }
 
-    const manager = Manager.getInstance();
-
-    request("external-transfer/get-call-properties", manager, {
-      callSid
-    }).then(response => {
-      if (response) {
-        const name = (response && response.to) || '';
-        this.setState({ name });
-      }
-    })
-
+    if (participant.participantType === 'unknown') {
+      request('external-transfer/get-call-properties', Manager.getInstance(), {
+        callSid: participant.callSid
+      }).then(response => {
+        if (response) {
+          const name = (response && response.to) || 'unknown';
+          this.setState({ name });
+        }
+      });
+    } else {
+      this.setState({ name: participant.worker ? participant.worker.fullName : 'unknown' });
+    }
   }
 
   render() {
