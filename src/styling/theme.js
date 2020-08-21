@@ -19,7 +19,9 @@ const sharedTheme = (theme) => ({
     boxDialpad: {
       marginTop: theme.spacing.unit * 5, 
       paddingTop: theme.spacing.unit * 5, 
-      borderTop: '1px solid #eeeeee' 
+      borderTop: '1px solid #eeeeee', 
+      height: "300px",
+      borderBottom: '1px solid #eeeeee', 
     },  
     titleAgentDialpad: {
       width: '100%',

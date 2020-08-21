@@ -2,8 +2,7 @@ import React from 'react';
 
 import sharedTheme from '../../styling/theme.js';
 import FormControl from '@material-ui/core/FormControl';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
+import Select from 'react-select';
 import Button from '@material-ui/core/Button';
 import { Icon } from '@twilio/flex-ui';
 import { withStyles } from '@material-ui/core/styles';
@@ -36,7 +35,7 @@ class InternalDialpad extends React.Component {
     }
 
     handleChange = event => {
-        this.setState({ selectedWorker: event.target.value})
+        this.setState({ selectedWorker: event.value })
     }
 
     makeCall = () => {
@@ -62,31 +61,33 @@ class InternalDialpad extends React.Component {
         const { contact_uri: worker_contact_uri }  = 
             manager.workerClient.attributes;
 
+        const workers = this.state.workerList.map((worker)=> {
+                const { activity_name } = worker;
+                const { contact_uri, full_name } = worker.attributes;
+
+                return (
+                    contact_uri !== worker_contact_uri && 
+                    activity_name !== "Offline" 
+                ) ? (
+                    { label: full_name, value: contact_uri }
+                ) : null
+            }
+        ).filter(elem => elem);
+
         return (
             <div className={classes.boxDialpad}>
                 <div className={classes.titleAgentDialpad}>Call Agent</div>
                 <div className={classes.subtitleDialpad}>Select agent</div>
                 <FormControl className={classes.formControl}>
-                    <Select
-                        value={this.state.selectedWorker}
+                    <Select 
+                        className="basic-single"
+                        classNamePrefix="select"
+                        isSearchable={true}
+                        name="workers"
+                        maxMenuHeight={150}
                         onChange={this.handleChange}
-                        isClearable
-                    >
-                        {this.state.workerList.map((worker)=> {
-                                const { activity_name } = worker;
-                                const { contact_uri, full_name } = worker.attributes;
-
-                                return (
-                                    contact_uri !== worker_contact_uri && 
-                                    activity_name !== "Offline" 
-                                ) ? (
-                                    <MenuItem value={contact_uri} key={contact_uri}>
-                                        {full_name}
-                                    </MenuItem>
-                                ) : null
-                            }
-                        )}
-                    </Select>
+                        options={workers}
+                    />
                     <div className={classes.buttonAgentDialpad}>
                         <Button 
                             variant="contained" 
