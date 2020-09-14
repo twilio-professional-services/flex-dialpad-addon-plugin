@@ -1,3 +1,55 @@
+# Opendoor Fork of Native Flex Dialpad Add-on
+
+This is a fork of the [Native Flex Dialpad Add-on](https://github.com/twilio-professional-services/flex-dialpad-addon-plugin). It has been modified for Opendoor's development environment. The original documentation ios preserved below the line break.
+
+## Local development
+
+TL;DR You'll be starting 2 servers: one for the plug-in front-end and one for the functions on the back-end. They can each be run from their respective directories with `npm start` after you've set up the `.env` files. Use `npm ci` instead of `npm install` to avoid changes to the `package-lock.json` files.
+
+Start the back-end functions server before the front-end server. The back-end functions will run on port 3000 and the front-end plugin will run on port 3001.
+
+### Back-end functions
+In the `/serverless` directory, create a `.env` file with the following variables set (all SIDs are for the sandbox Flex account):
+
+```
+cat > .env << EOF
+ACCOUNT_SID=[redacted-dev-account-sid]
+AUTH_TOKEN=[redacted-dev-account-auth-token]
+TWILIO_WORKFLOW_SID=[redacted-dev-account-workflow-sid]
+TWILIO_WORKSPACE_SID=[redacted-dev-account-workspace-sid]
+TWILIO_NUMBER=[redacted-dev-account-outgoing-caller-id]
+EOF
+```
+
+The `TWILIO_NUMBER` variable will be the outbound caller ID.
+
+Then install the requisite packages and start the server:
+```
+asdf install
+npm ci
+npm start
+```
+
+### Front-end plugin
+
+In the top-level directory, write REACT_APP_SERVICE_BASE_URL and REACT_APP_TASK_CHANNEL_SID to .env.development (all SIDs are for the sandbox Flex account):
+
+```
+cat > .env.development <<EOF
+REACT_APP_SERVICE_BASE_URL=http://localhost:3000
+REACT_APP_TASK_CHANNEL_SID=[redacted-dev-account-voice-task-channel-sid]
+PORT=3001
+EOF
+```
+
+Then install the requisite packages and start the server:
+```
+npm ci
+npm start
+```
+
+---
+
 # Native Flex Dialpad Add-on 
 
 The native Flex Dialpad does not support agent-to-agent direct calls or external transfers yet. This plugin is meant to be an add-on to the native Flex Diapad, adding both agent-to-agent direct calls and external transfers.
