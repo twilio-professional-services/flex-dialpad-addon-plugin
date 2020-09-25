@@ -78,7 +78,7 @@ class ConferenceDialog extends React.Component {
   render() {
     return (
       <Dialog
-        open={this.props.isOpen}
+        open={this.props.isOpen || false}
         onClose={this.handleClose}
       >
         <DialogContent>

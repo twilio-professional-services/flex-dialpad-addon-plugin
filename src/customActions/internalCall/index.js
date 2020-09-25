@@ -13,8 +13,8 @@ export const acceptInternalTask = async ({
     await payload.task.setAttributes({
       ...payload.task.attributes,
       outbound_to: payload.task.attributes.name,
-      from: payload.task.attributes.fromName
     });
+
 
     if (typeof(reservation.task.attributes.conference) !== 'undefined') {
 
