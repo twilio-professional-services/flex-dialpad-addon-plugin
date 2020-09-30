@@ -20,6 +20,7 @@
     "test": "flex-plugin test --env=jsdom"
   },
   "dependencies": {
+    "@material-ui/core": "^3.9.3",
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
     "craco-config-flex-plugin": "^3.10.1",
