@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "upload_assets": "yarn mortar pkg:upload_assets -b odfil.es -p twilio-flex-plugins/$STAGE/$RELEASE_SHA",
     "bootstrap": "flex-plugin check-start",
     "prebuild": "rimraf build && yarn bootstrap",
     "build": "./node_modules/.bin/env-cmd -f .env.production flex-plugin build",
@@ -31,6 +32,7 @@
     "react-select": "^3.1.0"
   },
   "devDependencies": {
+    "@opendoor/mortar": "*",
     "@twilio/flex-ui": "^1.19.0",
     "babel-polyfill": "^6.26.0",
     "enzyme": "^3.10.0",
