@@ -22,7 +22,7 @@ const sharedTheme = theme => ({
     paddingTop: theme.spacing(5),
     paddingLeft: theme.spacing(2),
     borderTop: '1px solid #eeeeee',
-    height: '300px',
+    height: '500px',
     borderBottom: '1px solid #eeeeee',
   },
   titleAgentDialpad: {

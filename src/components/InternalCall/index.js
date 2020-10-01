@@ -13,7 +13,7 @@ export const makeInternalCall = ({ manager, selectedWorker, workerList }) => {
     queue_sid,
   } = manager.serviceConfiguration.outbound_call_flows.default;
 
-  const { REACT_APP_TASK_CHANNEL_SID: taskChannelSid } = process.env;
+  const { REACT_APP_TASK_CHANNEL_SID: taskChannel } = process.env;
 
   const { contact_uri } = manager.workerClient.attributes;
 
@@ -34,7 +34,7 @@ export const makeInternalCall = ({ manager, selectedWorker, workerList }) => {
         autoAnswer: 'true',
         client_call: true,
       },
-      taskChannelSid,
+      taskChannel,
     }
   );
 };

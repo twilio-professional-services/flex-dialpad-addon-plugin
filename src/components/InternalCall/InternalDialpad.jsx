@@ -57,16 +57,17 @@ class InternalDialpad extends React.Component {
 
   handleTabChange = (event, value) => {
     this.setState({ selectedTab: value });
-    this.setState({ selectedTaskQueue: null });
+    value === 0 && this.setWorkers();
+    this.setWorkers('');
   };
 
   handleQueueChange = async event => {
     this.setState({ selectedTaskQueue: event.value });
+    this.setState({ workerList: [] });
     const workers = await listWorkersByQueue(this.props.manager, event.value);
     this.setState({
       workerList: Object.keys(workers).map(worker_sid => workers[worker_sid]),
     });
-    // console.debug('🐙🐙🐙🐙', queueList);
   };
 
   makeCall = () => {
@@ -130,8 +131,12 @@ class InternalDialpad extends React.Component {
       })
       .filter(elem => elem);
 
+    // Sort queues alphabetcially
+    queues.sort((a, b) => (a.label > b.label ? 1 : -1));
+    console.debug('QUEUES LIST: ', queues);
+
     // Sort workers alphabetically by first name
-    workers.sort((a, b) => (a.full_name > b.full_name ? 1 : -1));
+    workers.sort((a, b) => (a.full_name > b.full_name ? -1 : 1));
 
     return (
       <div className={classes.boxDialpad}>
@@ -151,7 +156,7 @@ class InternalDialpad extends React.Component {
               classNamePrefix='select'
               isSearchable={true}
               name='workers'
-              maxMenuHeight={150}
+              maxMenuHeight={600}
               onChange={this.handleChange}
               options={workers}
               placeholder='Select an Agent'
@@ -178,7 +183,7 @@ class InternalDialpad extends React.Component {
               classNamePrefix='select'
               isSearchable={true}
               name='queues'
-              maxMenuHeight={150}
+              maxMenuHeight={600}
               onChange={this.handleQueueChange}
               options={queues}
               placeholder='Select a Queue'
@@ -191,7 +196,7 @@ class InternalDialpad extends React.Component {
                   classNamePrefix='select'
                   isSearchable={true}
                   name='workers'
-                  maxMenuHeight={150}
+                  maxMenuHeight={600}
                   onChange={this.handleChange}
                   options={workers}
                 />
