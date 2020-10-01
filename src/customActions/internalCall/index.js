@@ -4,11 +4,17 @@ export const isInternalCall = payload =>
     payload.task.attributes.client_call === true
 
 
-export const acceptInternalTask = ({ 
+export const acceptInternalTask = async ({ 
   reservation, payload 
 }) => {
 
     const { REACT_APP_SERVICE_BASE_URL } = process.env;
+
+    await payload.task.setAttributes({
+      ...payload.task.attributes,
+      outbound_to: payload.task.attributes.name,
+    });
+
 
     if (typeof(reservation.task.attributes.conference) !== 'undefined') {
 

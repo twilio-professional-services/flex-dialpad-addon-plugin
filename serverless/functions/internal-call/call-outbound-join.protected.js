@@ -11,7 +11,7 @@ const updateTaskAttributes = (client, taskSid, attributes) =>
         });
 
 
-const addParticipantToConference = (client, conferenceSid, taskSid, to, from) => {
+const addParticipantToConference = (client, conferenceSid, taskSid, to, fromName) => {
 
   if (to.substring(0, 6) === 'client') {
     return client
@@ -22,8 +22,7 @@ const addParticipantToConference = (client, conferenceSid, taskSid, to, from) =>
           attributes: JSON.stringify(
             {
               to: to,
-            //   direction: 'outbound',
-              name: from,
+              name: fromName,
               from: process.env.TWILIO_NUMBER,
               targetWorker: to,
               autoAnswer: 'false',
@@ -34,7 +33,6 @@ const addParticipantToConference = (client, conferenceSid, taskSid, to, from) =>
               },
               internal: 'true',
               client_call: true,
-            //   outbound_to: to
             }),
           workflowSid: process.env.TWILIO_WORKFLOW_SID,
           taskChannel: 'voice'
@@ -73,9 +71,9 @@ exports.handler = async (context, event, callback) => {
         
         if (attributes.worker_call_sid === attributes.conference.participants.worker) { 
             
-            const { to, from } = attributes;
+            const { to, fromName } = attributes;
             
-            const result = await addParticipantToConference(client, ConferenceSid, taskSid, to, from);
+            const result = await addParticipantToConference(client, ConferenceSid, taskSid, to, fromName);
             
             attributes.conference.participants.taskSid = result.sid;
             
