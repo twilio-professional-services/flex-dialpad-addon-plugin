@@ -17,7 +17,7 @@
     "remove": "flex-plugin remove",
     "prestart": "yarn bootstrap",
     "start": "./node_modules/.bin/env-cmd -f .env.development flex-plugin start",
-    "test": "flex-plugin test --env=jsdom"
+    "test": "jest --passWithNoTests"
   },
   "dependencies": {
     "@material-ui/core": "^3.9.3",
