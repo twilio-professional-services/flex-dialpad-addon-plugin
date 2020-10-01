@@ -66,6 +66,7 @@ pluginsService.js
 build/
 
 *.DS_Store
+.DS_Store
 
 .env.development
 .env.production
