@@ -4,7 +4,7 @@ This is a fork of the [Native Flex Dialpad Add-on](https://github.com/twilio-pro
 
 ## Local development
 
-TL;DR You'll be starting 2 servers: one for the plug-in front-end and one for the functions on the back-end. They can each be run from their respective directories with `npm start` after you've set up the `.env` files. Use `npm ci` instead of `npm install` to avoid changes to the `package-lock.json` files.
+TL;DR You'll be starting 2 servers: one for the plug-in front-end and one for the functions on the back-end. They can each be run from their respective directories with `yarn start` after you've set up the `.env` files.
 
 Start the back-end functions server before the front-end server. The back-end functions will run on port 3000 and the front-end plugin will run on port 3001.
 
@@ -25,9 +25,8 @@ The `TWILIO_NUMBER` variable will be the outbound caller ID.
 
 Then install the requisite packages and start the server:
 ```
-asdf install
-npm ci
-npm start
+yarn install --frozen-lockfile
+yarn start
 ```
 
 ### Front-end plugin
@@ -44,8 +43,8 @@ EOF
 
 Then install the requisite packages and start the server:
 ```
-npm ci
-npm start
+yarn bootstrap
+yarn start
 ```
 
 ---
