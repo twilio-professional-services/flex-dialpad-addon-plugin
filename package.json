@@ -12,7 +12,6 @@
     "deploy": "flex-plugin deploy",
     "eject": "flex-plugin eject",
     "info": "flex-plugin info",
-    "postinstall": "yarn bootstrap",
     "list": "flex-plugin list",
     "remove": "flex-plugin remove",
     "prestart": "yarn bootstrap",
