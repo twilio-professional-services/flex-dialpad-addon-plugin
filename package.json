@@ -33,7 +33,7 @@
     "react-select": "^3.1.0"
   },
   "devDependencies": {
-    "@opendoor/mortar": "*",
+    "@opendoor/mortar": "latest",
     "@twilio/flex-ui": "^1.19.0",
     "babel-polyfill": "^6.26.0",
     "enzyme": "^3.10.0",

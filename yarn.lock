@@ -1888,10 +1888,10 @@
   resolved "https://registry.yarnpkg.com/@oclif/screen/-/screen-1.0.4.tgz#b740f68609dfae8aa71c3a6cab15d816407ba493"
   integrity sha512-60CHpq+eqnTxLZQ4PGHYNwUX572hgpMHGPtTWMjdTMsAvlm69lZV/4ly6O3sAYkomo4NggGcomrDpBe34rxUqw==
 
-"@opendoor/mortar@*":
-  version "0.0.0-local-fc65f85dad6f30b085faa0b604670432ec2d1183"
-  resolved "https://registry.yarnpkg.com/@opendoor/mortar/-/mortar-0.0.0-local-fc65f85dad6f30b085faa0b604670432ec2d1183.tgz#86a1018d94192923ef24e79c4183c8afc806f453"
-  integrity sha512-YCm1wtquLRLBMH21Oj9rSm70gMP/7co6kXqNwCItsCYuz4LVeZkcL6o3QAAlzy+W/JGv/mPTeGN7ADpL8F6BmA==
+"@opendoor/mortar@latest":
+  version "0.0.0-local-c285b43f475e8a066d5c7c9453dd87010b2e47d5"
+  resolved "https://registry.yarnpkg.com/@opendoor/mortar/-/mortar-0.0.0-local-c285b43f475e8a066d5c7c9453dd87010b2e47d5.tgz#bf4243f71e213675adbc3b5b480ac0e38ffa5b13"
+  integrity sha512-T2Rr8eLtBcIosmXpqmOntGlQIjpcy+5gsAAujPkl//Xka4y76nDdFu/oX2ICak/HPh4rwXpOr8Ur6HDiof0Aag==
   dependencies:
     "@babel/cli" "7.10.4"
     "@babel/core" "7.10.4"
