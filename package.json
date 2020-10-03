@@ -5,7 +5,7 @@
   "scripts": {
     "upload_assets": "yarn mortar pkg:upload_assets -b odfil.es -p twilio-flex-plugins/$STAGE/$RELEASE_SHA",
     "bootstrap": "flex-plugin check-start",
-    "prebuild": "rimraf build && yarn bootstrap",
+    "prebuild": "rimraf builds",
     "build": "./node_modules/.bin/env-cmd -f .env.production flex-plugin build",
     "clear": "flex-plugin clear",
     "predeploy": "yarn build",
@@ -14,7 +14,6 @@
     "info": "flex-plugin info",
     "list": "flex-plugin list",
     "remove": "flex-plugin remove",
-    "prestart": "yarn bootstrap",
     "start": "./node_modules/.bin/env-cmd -f .env.development flex-plugin start",
     "test": "jest --passWithNoTests"
   },
