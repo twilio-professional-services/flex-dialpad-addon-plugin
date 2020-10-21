@@ -27,6 +27,9 @@ class InternalDialpad extends React.Component {
         this.props.manager.insightsClient.instantQuery('tr-worker').then((q) => {
             
             q.on('searchResult', (items) => {
+                if(Object.keys(items).length === 0) {
+                    return;
+                }
                 this.setState({ workerList: Object.keys(items).map(workerSid => items[workerSid]) });
             });
 
@@ -36,6 +39,12 @@ class InternalDialpad extends React.Component {
 
     handleChange = event => {
         this.setState({ selectedWorker: event.value })
+    }
+
+    handleInputChange = event => {
+        if(event.length > 0){ 
+            this.setWorkers(`data.attributes.full_name CONTAINS "${event}"`)
+        }  
     }
 
     makeCall = () => {
@@ -86,6 +95,7 @@ class InternalDialpad extends React.Component {
                         name="workers"
                         maxMenuHeight={150}
                         onChange={this.handleChange}
+                        onInputChange={this.handleInputChange}
                         options={workers}
                     />
                     <div className={classes.buttonAgentDialpad}>
