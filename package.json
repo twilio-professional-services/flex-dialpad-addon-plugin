@@ -25,6 +25,7 @@
     "env-cmd": "^10.1.0",
     "flex-plugin": "^3.5.0",
     "flex-plugin-scripts": "^3.11.0",
+    "lodash": "^4.17.20",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-scripts": "^3.4.1",
