@@ -91,7 +91,7 @@ class InternalDialpad extends React.Component {
 
     render() {       
 
-        const { classes, manager } = this.props;
+        const { classes } = this.props;
 
         const workers = this.state.workerList.map((worker)=> {
                 const { activity_name } = worker;
