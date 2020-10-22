@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import { Icon } from '@twilio/flex-ui';
 import { withStyles } from '@material-ui/core/styles';
 import { makeInternalCall } from './index';
+import { debounce } from 'lodash';
 
 const styles = theme => (sharedTheme(theme));
 
@@ -15,36 +16,61 @@ class InternalDialpad extends React.Component {
     state = { 
         workerList: [], 
         selectedWorker: null,
-        searchQuery: "" 
+        inputText: ""
     };
     
     async componentDidMount() {
-        this.setWorkers(this.state.searchQuery);
+        this.setWorkers();
     }
 
-    //Search in Sync for taskrouter workers
-    setWorkers = (query) => {
+    setWorkers = (query = "") => {
+
+        const { contact_uri: worker_contact_uri }  = 
+            this.props.manager.workerClient.attributes;
+
         this.props.manager.insightsClient.instantQuery('tr-worker').then((q) => {
             
             q.on('searchResult', (items) => {
-                if(Object.keys(items).length === 0) {
-                    return;
-                }
+                console.log(items);
                 this.setState({ workerList: Object.keys(items).map(workerSid => items[workerSid]) });
             });
 
-            q.search(query);
+            q.search(`data.attributes.contact_uri != "${worker_contact_uri}"${query !== "" ? ` AND ${query}` : ""}`);
         });
+
     }
 
     handleChange = event => {
-        this.setState({ selectedWorker: event.value })
+        console.log("hey");
+        this.setState({ selectedWorker: event })
     }
 
     handleInputChange = event => {
-        if(event.length > 0){ 
-            this.setWorkers(`data.attributes.full_name CONTAINS "${event}"`)
-        }  
+
+        this.setState({ inputText: event });
+        this.handleWorkersListUpdate(event);
+
+        if(event !== "") {
+            this.setState({ selectedWorker: null });
+        }
+
+    }
+
+    handleWorkersListUpdate = debounce((e) => {
+
+            if(e){ 
+
+                this.setWorkers(`data.attributes.full_name CONTAINS "${e}"`)
+                    
+            }  
+
+        }, 250, { 'maxWait': 1000 }
+    )
+
+    handleOnFocus = () => {
+        if(this.state.inputText === "" && this.state.workerList.length === 0) {
+            this.setWorkers();
+        }
     }
 
     makeCall = () => {
@@ -55,7 +81,7 @@ class InternalDialpad extends React.Component {
 
             makeInternalCall({ 
                 manager, 
-                selectedWorker: this.state.selectedWorker, 
+                selectedWorker: this.state.selectedWorker.value, 
                 workerList: this.state.workerList 
             });
 
@@ -67,15 +93,11 @@ class InternalDialpad extends React.Component {
 
         const { classes, manager } = this.props;
 
-        const { contact_uri: worker_contact_uri }  = 
-            manager.workerClient.attributes;
-
         const workers = this.state.workerList.map((worker)=> {
                 const { activity_name } = worker;
                 const { contact_uri, full_name } = worker.attributes;
 
                 return (
-                    contact_uri !== worker_contact_uri && 
                     activity_name !== "Offline" 
                 ) ? (
                     { label: full_name, value: contact_uri }
@@ -96,7 +118,10 @@ class InternalDialpad extends React.Component {
                         maxMenuHeight={150}
                         onChange={this.handleChange}
                         onInputChange={this.handleInputChange}
+                        onMenuOpen={this.handleOnFocus}
                         options={workers}
+                        inputValue={this.state.inputText}
+                        value={this.state.selectedWorker || null}
                     />
                     <div className={classes.buttonAgentDialpad}>
                         <Button 
