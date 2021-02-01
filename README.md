@@ -6,7 +6,7 @@ This is a fork of the [Native Flex Dialpad Add-on](https://github.com/twilio-pro
 
 TL;DR You'll be starting 2 servers: one for the plug-in front-end and one for the functions on the back-end. They can each be run from their respective directories with `yarn start` after you've set up the `.env` files.
 
-Start the back-end functions server before the front-end server. The back-end functions will run on port 3000 and the front-end plugin will run on port 3001.
+Start the back-end functions server before the front-end server. The back-end functions will run on port 3000 and the front-end plugin will run on port 3001!
 
 ### Back-end functions
 In the `/serverless` directory, create a `.env` file with the following variables set (all SIDs are for the sandbox Flex account):
