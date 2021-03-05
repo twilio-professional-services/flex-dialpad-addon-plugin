@@ -13,7 +13,7 @@ const request = async (path, manager, params) =>{
     };
 
     const { REACT_APP_SERVICE_BASE_URL } = process.env;
-
+    console.log('REQUEST BASE URL: ', REACT_APP_SERVICE_BASE_URL, ' PATH:', path);
     const resp = await fetch(`${REACT_APP_SERVICE_BASE_URL}/${path}`, options)
     return (await resp.json())
 }
