@@ -105,19 +105,35 @@ and then
 
 2. Clone this repository
 
-3. Copy .env.example to .env.development and to .env.production and set the following variables:
+3. Copy `.env.example` to `.env` and set the following variables:
 
     - REACT_APP_SERVICE_BASE_URL: your Twilio Functions base url (this will be available after you deploy your functions). In local development environment, it could be your localhost base url. 
     - REACT_APP_TASK_CHANNEL_SID: the voice channel SID 
 
-  **Note**: Remember that both .env.development and .env.production is for front-end use so do not add any type of key/secret variable to them. When developing, the .env.development is used while the .env.production is used when building and deploying the plugin. Also, just variables starting with the name *REACT_APP_* will work.
+  **Note**: Remember that .env is for front-end use so do not add any type of key/secret variable to them. When developing, the .env.development is used while the .env.production is used when building and deploying the plugin. Also, just variables starting with the name *REACT_APP_* will work.
   
 
 4.  run `npm install`
 
-5. copy ./serverless/.env.sample to ./serverless/.env and populate the appropriate environment variables.
+5. copy `./serverless/.env.sample` to `./serverless/.env` and populate the appropriate environment variables.
 
-6.  cd into ./serverless/ then run `npm install` and then `twilio serverless:deploy` (optionally you can run locally with `twilio serverless:start --ngrok=""`
+```
+ACCOUNT_SID=
+AUTH_TOKEN=
+TWILIO_WORKFLOW_SID=
+TWILIO_WORKSPACE_SID=
+TWILIO_NUMBER=
+```
+
+6.  cd into ./serverless/ then run 
+
+`npm install` 
+
+and then 
+
+`twilio serverless:deploy` 
+
+(optionally you can run locally with `twilio serverless:start --ngrok=""`)
 
 # Known issues
 
