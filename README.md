@@ -1,4 +1,7 @@
 # Native Flex Dialpad Add-on 
+# Notes
+This plugin was upgraded to the latest version of the Plugin Builder (v4), now part of the Twilio CLI.
+See: https://www.twilio.com/docs/flex/developer/plugins/migrate
 
 The native Flex Dialpad does not support agent-to-agent direct calls or external transfers yet. This plugin is meant to be an add-on to the native Flex Diapad, adding both agent-to-agent direct calls and external transfers.
 
@@ -46,31 +49,32 @@ npm install
 
 ### Development
 
-In order to develop locally, you can use the Webpack Dev Server by running:
+In order to develop locally, you can use the Twilio CLI to run the plugin locally. Using your commandline run the following from the root dirctory of the plugin.
 
 ```bash
-npm start
+twilio flex:plugins:start
 ```
 
-This will automatically start up the Webpack Dev Server and open the browser for you. Your app will run on `http://localhost:8080`. If you want to change that you can do this by setting the `PORT` environment variable:
-
-```bash
-PORT=3000 npm start
-```
+This will automatically start up the Webpack Dev Server and open the browser for you. Your app will run on `http://localhost:3000`.
 
 When you make changes to your code, the browser window will be automatically refreshed.
 
+
 ### Deploy
 
-Once you are happy with your plugin, you have to bundle it in order to deploy it to Twilio Flex.
+#### Plugin Deployment
 
-Run the following command to start the bundling:
+Once you are happy with your plugin, you have to deploy then release the plugin for it to take affect on Twilio hosted Flex.
+
+Run the following command to start the deployment:
 
 ```bash
-npm run build
+twilio flex:plugins:deploy --major --changelog "Notes for this version" --description "Functionality of the plugin"
 ```
 
-Afterwards, you'll find in your project a `build/` folder that contains a file with the name of your plugin project. For example, `plugin-example.js`. Take this file and upload it into the Assets part of your Twilio Runtime.
+After your deployment runs you will receive instructions for releasing your plugin from the bash prompt. You can use this or skip this step and release your plugin from the Flex plugin dashboard here https://flex.twilio.com/admin/plugins
+
+For more details on deploying your plugin, refer to the [deploying your plugin guide](https://www.twilio.com/docs/flex/plugins#deploying-your-plugin).
 
 Note: Common packages like `React`, `ReactDOM`, `Redux` and `ReactRedux` are not bundled with the build because they are treated as external dependencies so the plugin will depend on Flex to provide them globally.
 
@@ -101,21 +105,35 @@ and then
 
 2. Clone this repository
 
-3. Copy .env.example to .env.development and to .env.production and set the following variables:
+3. Copy `.env.example` to `.env` and set the following variables:
 
     - REACT_APP_SERVICE_BASE_URL: your Twilio Functions base url (this will be available after you deploy your functions). In local development environment, it could be your localhost base url. 
     - REACT_APP_TASK_CHANNEL_SID: the voice channel SID 
 
-  **Note**: Remember that both .env.development and .env.production is for front-end use so do not add any type of key/secret variable to them. When developing, the .env.development is used while the .env.production is used when building and deploying the plugin. Also, just variables starting with the name *REACT_APP_* will work.
+  **Note**: Remember that .env is for front-end use so do not add any type of key/secret variable to them. When developing, the .env.development is used while the .env.production is used when building and deploying the plugin. Also, just variables starting with the name *REACT_APP_* will work.
   
 
 4.  run `npm install`
 
-5. copy ./serverless/.env.sample to ./serverless/.env and populate the appropriate environment variables.
+5. copy `./serverless/.env.sample` to `./serverless/.env` and populate the appropriate environment variables.
 
-6.  cd into ./serverless/ then run `npm install` and then `twilio serverless:deploy` (optionally you can run locally with `twilio serverless:start --ngrok=""`
+```
+ACCOUNT_SID=
+AUTH_TOKEN=
+TWILIO_WORKFLOW_SID=
+TWILIO_WORKSPACE_SID=
+TWILIO_NUMBER=
+```
 
-8. cd back to the root folder and run `npm start` to run locally or `npm run-script build` and deploy the generated ./build/plugin-dialpad.js to [twilio assests](https://www.twilio.com/console/assets/public) to include plugin with hosted Flex
+6.  cd into ./serverless/ then run 
+
+`npm install` 
+
+and then 
+
+`twilio serverless:deploy` 
+
+(optionally you can run locally with `twilio serverless:start --ngrok=""`)
 
 # Known issues
 
