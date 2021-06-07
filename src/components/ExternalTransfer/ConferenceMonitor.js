@@ -12,16 +12,17 @@ class ConferenceMonitor extends React.Component {
     const {
       conferenceSid,
       liveParticipantCount,
+      liveWorkerCount,
       participants = []
     } = conference;
     const liveParticipants = participants.filter(p => p.status === 'joined');
 
     if (liveParticipantCount > 2 && this.state.liveParticipantCount <= 2) {
-      if (this.shouldUpdateParticipants(participants)) {
+      if (this.shouldUpdateParticipants(participants, liveWorkerCount)) {
         this.handleMoreThanTwoParticipants(conferenceSid, liveParticipants);
       }
     } else if (liveParticipantCount <= 2 && this.state.liveParticipantCount > 2) {
-      if (this.shouldUpdateParticipants(participants)) {
+      if (this.shouldUpdateParticipants(participants, liveWorkerCount)) {
         this.handleOnlyTwoParticipants(conferenceSid, liveParticipants);
       }
     }
@@ -31,21 +32,16 @@ class ConferenceMonitor extends React.Component {
     }
   }
 
-  hasSingleJoinedWorkerParticipant = (participants = []) => {
-    const joinedWorkers = participants.filter(p => p.participantType === 'worker' && p.status === 'joined');
-    return joinedWorkers.length === 1;
-  }
-
   hasUnknownParticipant = (participants = []) => {
     return participants.some(p => p.participantType === 'unknown');
   }
 
-  shouldUpdateParticipants = (participants) => {
+  shouldUpdateParticipants = (participants, liveWorkerCount) => {
     console.debug(
       'dialpad-addon, ConferenceMonitor, shouldUpdateParticipants:',
-      this.hasSingleJoinedWorkerParticipant(participants) && this.hasUnknownParticipant(participants)
+      liveWorkerCount <= 1 && this.hasUnknownParticipant(participants)
     );
-    return this.hasSingleJoinedWorkerParticipant(participants) && this.hasUnknownParticipant(participants);
+    return liveWorkerCount <= 1 && this.hasUnknownParticipant(participants);
   }
 
   handleMoreThanTwoParticipants = (conferenceSid, participants) => {
