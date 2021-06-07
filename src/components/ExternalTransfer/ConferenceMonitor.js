@@ -12,19 +12,36 @@ class ConferenceMonitor extends React.Component {
     const {
       conferenceSid,
       liveParticipantCount,
+      liveWorkerCount,
       participants = []
     } = conference;
     const liveParticipants = participants.filter(p => p.status === 'joined');
 
     if (liveParticipantCount > 2 && this.state.liveParticipantCount <= 2) {
-      this.handleMoreThanTwoParticipants(conferenceSid, liveParticipants);
+      if (this.shouldUpdateParticipants(participants, liveWorkerCount)) {
+        this.handleMoreThanTwoParticipants(conferenceSid, liveParticipants);
+      }
     } else if (liveParticipantCount <= 2 && this.state.liveParticipantCount > 2) {
-      this.handleOnlyTwoParticipants(conferenceSid, liveParticipants);
+      if (this.shouldUpdateParticipants(participants, liveWorkerCount)) {
+        this.handleOnlyTwoParticipants(conferenceSid, liveParticipants);
+      }
     }
 
     if (liveParticipantCount !== this.state.liveParticipantCount) {
       this.setState({ liveParticipantCount });
     }
+  }
+
+  hasUnknownParticipant = (participants = []) => {
+    return participants.some(p => p.participantType === 'unknown');
+  }
+
+  shouldUpdateParticipants = (participants, liveWorkerCount) => {
+    console.debug(
+      'dialpad-addon, ConferenceMonitor, shouldUpdateParticipants:',
+      liveWorkerCount <= 1 && this.hasUnknownParticipant(participants)
+    );
+    return liveWorkerCount <= 1 && this.hasUnknownParticipant(participants);
   }
 
   handleMoreThanTwoParticipants = (conferenceSid, participants) => {
