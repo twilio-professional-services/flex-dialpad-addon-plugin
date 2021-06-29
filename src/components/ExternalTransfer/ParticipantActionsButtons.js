@@ -119,7 +119,8 @@ class ParticipantActionsButtons extends React.Component {
   }
 
   render() {
-    return this.props.listMode
+    if (this.props.view.activeView != 'teams') {
+      return this.props.listMode
       ? (
         <ActionsContainerListItem className="ParticipantCanvas-Actions">
           {this.props.showKickConfirmation
@@ -135,17 +136,22 @@ class ParticipantActionsButtons extends React.Component {
           }
         </ActionsContainer>
       );
+    } else {
+      return (null);
+    }
   }
 }
 
 const mapStateToProps = (state, ownProps) => {
   const { participant } = ownProps;
+  const view = state.flex.view;
   const componentViewStates = state.flex.view.componentViewStates;
   const customParticipants = componentViewStates.customParticipants || {};
   const participantState = customParticipants[participant.callSid] || {};
   const customParticipantsState = {};
 
   return {
+    view,
     showKickConfirmation: participantState.showKickConfirmation,
     setShowKickConfirmation: value => {
       customParticipantsState[participant.callSid] = {
