@@ -2,7 +2,6 @@ import { Actions, StateHelper } from '@twilio/flex-ui';
 import { acceptInternalTask, rejectInternalTask, isInternalCall, toggleHoldInternalCall } from './internalCall';
 import { kickExternalTransferParticipant } from './externalTransfer';
 import ConferenceService from '../helpers/ConferenceService';
-import { partition } from 'lodash-es';
 
 export default (manager) => {
 
