@@ -105,9 +105,9 @@ export default (manager) => {
   })
 
   Actions.addListener('beforeHangupCall', async (payload, abortFunction) => {
-    const { conference, sid, taskSid } = payload.task;
+    const { conference, taskSid } = payload.task;
     const participantsOnHold = (participant) => {
-      return participant.onHold == true
+      return participant.onHold;
     };
     const snooze = ms => new Promise(resolve => setTimeout(resolve, ms));
     const getLatestConference = taskSid => {
@@ -118,29 +118,29 @@ export default (manager) => {
     // check if worker hanging up is last worker on the call
     if (conference.liveWorkerCount === 1) {
 
+      //if so, ensure no other participants are on hold as 
+      //no external parties will be able to remove them from being on hold.
+      conference.participants.forEach(async (participant) => {
+        const { participantType, workerSid, callSid } = participant;
+        if (participant.onHold) {
+          await Actions.invokeAction("UnholdParticipant", {
+            participantType,
+            task: payload.task,
+            targetSid: participantType === 'worker' ? workerSid : callSid
+          });
+        }
+      });
 
       // make sure this operation blocks hanging up the call until 
-      // all participants are unhold
-      let maxAttempts = 0;
+      // all participants are taken off hold or max wait time is reached
+      let attempts = 0;
       let updatedConference = getLatestConference(taskSid);
-      while (updatedConference.participants.some(participantsOnHold) && maxAttempts < 10) {
-
-        //if so, ensure no other participants are on hold as 
-        //no external parties will be able to remove them from being on hold.
-        updatedConference.participants.forEach(async (participant) => {
-          const { participantType, workerSid, callSid } = participant;
-          if (participant.onHold) {
-            await Actions.invokeAction("UnholdParticipant", {
-              participantType,
-              task: payload.task,
-              targetSid: participantType === 'worker' ? workerSid : callSid
-            });
-          }
-        });
-
+      let { participants } = updatedConference;
+      while (participants.some(participantsOnHold) && attempts < 10) {
         await snooze(500);
-        maxAttempts++;
+        attempts++;
         updatedConference = getLatestConference(taskSid);
+        participants = updatedConference.participants;
       }
 
       // if some participants are still on hold, abort hanging up the call
