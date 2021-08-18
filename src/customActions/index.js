@@ -2,6 +2,7 @@ import { Actions, StateHelper } from '@twilio/flex-ui';
 import { acceptInternalTask, rejectInternalTask, isInternalCall, toggleHoldInternalCall } from './internalCall';
 import { kickExternalTransferParticipant } from './externalTransfer';
 import ConferenceService from '../helpers/ConferenceService';
+import { partition } from 'lodash-es';
 
 export default (manager) => {
 
@@ -116,21 +117,35 @@ export default (manager) => {
 
     // check if worker hanging up is last worker on the call
     if (conference.liveWorkerCount === 1) {
-      //if so, ensure no other participants are on hold as 
-      //no external parties will be able to remove them from being on hold.
-      conference.participants.forEach(async (participant) => {
-        if (participant.onHold) {
-          await Actions.invokeAction("UnholdParticipant", {
-            sid,
-            participant
-          });
-        }
-      });
+
 
       // make sure this operation blocks hanging up the call until 
       // all participants are unhold
-      while (getLatestConference(taskSid).participants.some(participantsOnHold)) {
-        await snooze(200);
+      let maxAttempts = 0;
+      let updatedConference = getLatestConference(taskSid);
+      while (updatedConference.participants.some(participantsOnHold) && maxAttempts < 10) {
+
+        //if so, ensure no other participants are on hold as 
+        //no external parties will be able to remove them from being on hold.
+        updatedConference.participants.forEach(async (participant) => {
+          const { participantType, workerSid, callSid } = participant;
+          if (participant.onHold) {
+            await Actions.invokeAction("UnholdParticipant", {
+              participantType,
+              task: payload.task,
+              targetSid: participantType === 'worker' ? workerSid : callSid
+            });
+          }
+        });
+
+        await snooze(500);
+        maxAttempts++;
+        updatedConference = getLatestConference(taskSid);
+      }
+
+      // if some participants are still on hold, abort hanging up the call
+      if (updatedConference.participants.some(participantsOnHold)) {
+        abortFunction();
       }
     }
   })
