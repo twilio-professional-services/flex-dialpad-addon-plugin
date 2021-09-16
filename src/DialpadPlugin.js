@@ -3,7 +3,6 @@ import { FlexPlugin } from 'flex-plugin';
 import registerCustomActions from './customActions';
 import { loadExternalTransferInterface } from './components/ExternalTransfer';
 import { loadInternalCallInterface } from './components/InternalCall';
-import { NotificationType } from '@twilio/flex-ui-core';
 
 const PLUGIN_NAME = 'DialpadPlugin';
 
@@ -17,17 +16,15 @@ export default class DialpadPlugin extends FlexPlugin {
     flex.Notifications.registerNotification({
       id: "dialpadNotEnabled",
       content: "Please enable the Flex Dialpad within the Twilio Console to use the Flex Dialpad Addon Plugin",
-      type: NotificationType.error,
+      type: flex.NotificationType.error,
       closeButton: true,
       timeout: 0
     })
 
     try {
-      // Check for existence Flex Dialpad configuration
-      const {
-        enabled
-      } = manager.serviceConfiguration.outbound_call_flows.default;
+      const { enabled } = manager.serviceConfiguration.outbound_call_flows.default;
 
+      // Check that Flex Dialpad is enabled before loading plugin features
       if (enabled) {
         loadInternalCallInterface.bind(this)(flex, manager)
         loadExternalTransferInterface.bind(this)(flex, manager)
