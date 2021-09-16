@@ -25,13 +25,14 @@ export default class DialpadPlugin extends FlexPlugin {
     try {
       // Check for existence Flex Dialpad configuration
       const {
-        workflow_sid,
-        queue_sid
+        enabled
       } = manager.serviceConfiguration.outbound_call_flows.default;
 
-      loadInternalCallInterface.bind(this)(flex, manager)
-      loadExternalTransferInterface.bind(this)(flex, manager)
-      registerCustomActions(manager);
+      if (enabled) {
+        loadInternalCallInterface.bind(this)(flex, manager)
+        loadExternalTransferInterface.bind(this)(flex, manager)
+        registerCustomActions(manager);
+      }
     } catch (error) {
       console.log('Dialpad Addon Plugin:: Flex Dialpad not Enabled')
       flex.Notifications.showNotification('dialpadNotEnabled')
