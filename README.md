@@ -30,6 +30,10 @@ This feature is based on the work on this [project](https://github.com/twilio-la
 # Configuration
 
 
+## Twilio Console
+
+Ensure the Flex Native Dialpad is enabled and configured within the [Twilio Console](https://www.twilio.com/console/flex/voice).
+
 ## Flex Plugin
 
 This repository is a Flex plugin with some other assets. The following describing how you setup, develop and deploy your Flex plugin.
