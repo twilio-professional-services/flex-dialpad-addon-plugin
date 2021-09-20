@@ -27,7 +27,6 @@
     "flex-plugin-scripts": "^3.11.0",
     "react": "16.5.2",
     "react-dom": "16.5.2",
-    "react-scripts": "^4.0.0",
     "react-select": "^3.1.0"
   },
   "devDependencies": {
@@ -37,6 +36,7 @@
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "husky": "^4.3.0",
+    "react-scripts": "^4.0.0",
     "rimraf": "^3.0.0"
   },
   "browserslist": {
