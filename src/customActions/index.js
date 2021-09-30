@@ -1,7 +1,8 @@
-import { Actions, StateHelper } from '@twilio/flex-ui';
+import { Actions, Notifications, StateHelper } from '@twilio/flex-ui';
 import { acceptInternalTask, rejectInternalTask, isInternalCall, toggleHoldInternalCall } from './internalCall';
 import { kickExternalTransferParticipant } from './externalTransfer';
 import ConferenceService from '../helpers/ConferenceService';
+import { CustomNotifications } from '../notifications';
 
 export default (manager) => {
 
@@ -144,6 +145,7 @@ export default (manager) => {
 
       // if some participants are still on hold, abort hanging up the call
       if (updatedConference.participants.some(participantsOnHold)) {
+        Notifications.showNotification(CustomNotifications.FailedHangupNotification);
         abortFunction();
       }
     }

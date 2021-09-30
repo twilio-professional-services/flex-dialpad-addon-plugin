@@ -1,6 +1,7 @@
 import { FlexPlugin } from 'flex-plugin';
 
 import registerCustomActions from './customActions';
+import registerCustomNotifications from './notifications';
 import { loadExternalTransferInterface } from './components/ExternalTransfer';
 import { loadInternalCallInterface } from './components/InternalCall';
 
@@ -12,11 +13,12 @@ export default class DialpadPlugin extends FlexPlugin {
   }
 
   init(flex, manager) {
-  
+
     loadExternalTransferInterface.bind(this)(flex, manager)
 
     loadInternalCallInterface.bind(this)(flex, manager)
 
     registerCustomActions(manager);
+    registerCustomNotifications(flex, manager);
   }
 }
