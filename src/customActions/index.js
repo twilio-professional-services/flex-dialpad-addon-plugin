@@ -107,7 +107,7 @@ export default (manager) => {
   Actions.addListener('beforeHangupCall', async (payload, abortFunction) => {
     const { conference, taskSid } = payload.task;
     const participantsOnHold = (participant) => {
-      return participant.onHold && participant.joined;
+      return participant.onHold && participant.status === "joined";
     };
     const snooze = ms => new Promise(resolve => setTimeout(resolve, ms));
     const getLatestConference = taskSid => {
