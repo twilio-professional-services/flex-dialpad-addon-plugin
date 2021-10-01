@@ -122,7 +122,7 @@ export default (manager) => {
       //no external parties will be able to remove them from being on hold.
       conference.participants.forEach(async (participant) => {
         const { participantType, workerSid, callSid } = participant;
-        if (participant.onHold) {
+        if (participant.onHold && participant.status === "joined") {
           await Actions.invokeAction("UnholdParticipant", {
             participantType,
             task: payload.task,
