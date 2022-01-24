@@ -69,3 +69,5 @@ build/
 
 .env.development
 .env.production
+.env.*
+

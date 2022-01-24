@@ -129,6 +129,24 @@ class ConferenceService {
 
     });
   }
+
+  fetchParticipant = (conference, participantSid) => {
+    return new Promise((resolve, reject) => {
+
+      request('external-transfer/fetch-conference-participant', this.manager, {
+        conferenceSid: conference,
+        participantCallSid: participantSid
+      }).then(response => {
+        console.log(`Participant ${participantSid} retrieved`, response);
+        resolve(response);
+      })
+      .catch(error => {
+        console.error(`Error fetching participant ${participantSid}\r\n`, error);
+        reject(error);
+      });
+
+    });
+  }
 }
 
 const conferenceService = new ConferenceService();

@@ -1,5 +1,7 @@
 # Native Flex Dialpad Add-on 
 # Notes
+This branch contains modifications to support the [Recover Non-Graceful Disconnects](https://github.com/lhamoudi/flex-recover-non-graceful-disconnects) plugin scenario - where we want to leave participant(s) in conference when the agent drops unexpectedly (e.g. page refresh).
+
 This plugin was upgraded to the latest version of the Plugin Builder (v4), now part of the Twilio CLI.
 See: https://www.twilio.com/docs/flex/developer/plugins/migrate
 
@@ -109,6 +111,7 @@ and then
 
     - REACT_APP_SERVICE_BASE_URL: your Twilio Functions base url (this will be available after you deploy your functions). In local development environment, it could be your localhost base url. 
     - REACT_APP_TASK_CHANNEL_SID: the voice channel SID 
+    - REACT_APP_NON_GRACEFUL_DISCONNECT_SERVICE_BASE_URL: if you are using the flex-recover-non-graceful-disconnects features, this is the base URL for that feature's serverless functions
 
   **Note**: Remember that .env is for front-end use so do not add any type of key/secret variable to them. When developing, the .env.development is used while the .env.production is used when building and deploying the plugin. Also, just variables starting with the name *REACT_APP_* will work.
   
