@@ -18,10 +18,18 @@ class ConferenceMonitor extends React.Component {
     const liveParticipants = participants.filter(p => p.status === 'joined');
 
     if (liveParticipantCount > 2 && this.state.liveParticipantCount <= 2) {
+      console.debug(
+        `dialpad-addon, ConferenceMonitor, componentDidUpdate, increased from ${this.state.liveParticipantCount} to ${liveParticipantCount}`);
+      console.debug(
+        `dialpad-addon, ConferenceMonitor, componentDidUpdate, liveWorkerCount: ${liveWorkerCount} liveParticipantCount: ${liveParticipantCount}`);
       if (this.shouldUpdateParticipants(participants, liveWorkerCount)) {
         this.handleMoreThanTwoParticipants(conferenceSid, liveParticipants);
       }
-    } else if (liveParticipantCount <= 2 && this.state.liveParticipantCount > 2) {
+    } else if (liveParticipantCount <= 2 && this.state.liveParticipantCount > 2) {  
+      console.debug(
+        `dialpad-addon, ConferenceMonitor, componentDidUpdate, decreased from ${this.state.liveParticipantCount} to ${liveParticipantCount}`);
+      console.debug(
+        `dialpad-addon, ConferenceMonitor, componentDidUpdate, liveWorkerCount: ${liveWorkerCount} liveParticipantCount: ${liveParticipantCount}`);
       if (this.shouldUpdateParticipants(participants, liveWorkerCount)) {
         this.handleOnlyTwoParticipants(conferenceSid, liveParticipants);
       }
@@ -36,16 +44,26 @@ class ConferenceMonitor extends React.Component {
     return participants.some(p => p.participantType === 'unknown');
   }
 
+
   shouldUpdateParticipants = (participants, liveWorkerCount) => {
-    console.debug(
-      'dialpad-addon, ConferenceMonitor, shouldUpdateParticipants:',
-      liveWorkerCount <= 1 && this.hasUnknownParticipant(participants)
-    );
-    return liveWorkerCount <= 1 && this.hasUnknownParticipant(participants);
+    // console.debug(
+    //   'dialpad-addon, ConferenceMonitor, shouldUpdateParticipants:',
+    //   liveWorkerCount <= 1 && this.hasUnknownParticipant(participants)
+    // );
+    // return liveWorkerCount <= 1 && this.hasUnknownParticipant(participants);
+
+    /*
+     * COMMENTED OUT DEFAULT BEHAVIOR ABOVE WHICH ONLY LOOKS AT EXTERNAL CONFERENCES
+     * For non-graceful diconnect logic, we always want worker endConferenceOnExit to be false - including on 
+     * conferences involving internal agents
+     */
+    return true;
+
   }
 
   handleMoreThanTwoParticipants = (conferenceSid, participants) => {
-    console.log('More than two conference participants. Setting endConferenceOnExit to false for all participants.');
+    // TODO: If multiple agents are in conference, they will each execute the same updates
+    console.debug('dialpad-addon, ConferenceMonitor, handleMoreThanTwoParticipants, More than two conference participants. Setting endConferenceOnExit to false for all participants.');
     this.setEndConferenceOnExit(conferenceSid, participants, false);
   }
 
@@ -56,6 +74,11 @@ class ConferenceMonitor extends React.Component {
     this.setEndConferenceOnExit(conferenceSid, participants, true);
     */
     
+
+    /*
+     *
+     */
+
     // REPLACING WITH NON-GRACEFUL AGENT DISCONNECT LOGIC 
     /*
      * When paired with `flex-recover-non-graceful-disconnects` plugin (and functions, handlers, etc), this logic is 
@@ -66,27 +89,41 @@ class ConferenceMonitor extends React.Component {
      */
     const { task } = this.props;
     const myParticipant = participants.find(
-      (p) => p.workerSid === ConferenceService.manager.workerClient.sid
+      (p) => p.isMyself
     );
+
+    const anyOtherWorkers = participants.filter(
+      (p) => p.participantType === "worker" && !p.isMyself
+    );
+    
+    // If I'm not a participant anymore (and there are no other agents involved), then perform default logic of setting all remaining participants as endConferenceOnExit true
+    // NOTE: If there ARE other workers, their own Flex Plugin will deal with this logic (so need for me to do it a second time)
     if (!myParticipant) {
-      // If I'm not a participant anymore, then perform default logic of setting all remaining participants as endConferenceOnExit true
-      console.log('Conference participants dropped to two, but agent is no longer in conference. Setting endConferenceOnExit to true for all remaining participants.');
-      this.setEndConferenceOnExit(conferenceSid, participants, true);
+      console.debug('dialpad-addon, ConferenceMonitor, handleOnlyTwoParticipants, I am no longer in this conference');
+      if (anyOtherWorkers.length == 0) {
+        console.debug('dialpad-addon, ConferenceMonitor, handleOnlyTwoParticipants, No other workers in conference, so set endConferenceOnExit to true for all');
+        this.setEndConferenceOnExit(conferenceSid, participants, true);
+      }
+      // Nothing more to do when I'm not a participant
       return;
     } 
 
-    // If I'm still in conference, then only set the others to endConferenceOnExit true - and make sure my flag is false!
-    console.log('Conference participants dropped to two (including agent).');
-    console.log('Setting endConferenceOnExit to true for remaining participants - excluding agent');
-    this.setEndConferenceOnExit(conferenceSid, participants.filter((p) => p.workerSid !== myParticipant.workerSid), true);
-    console.log('Waiting for Flex to do its native thing (setting endConferenceOnExit to true for agent), so i can undo it');
+    // If I'm still in conference, then only set the other NON-WORKER participants to endConferenceOnExit true. 
+    // Don't update any other worker participants - because they have their own instance of this Flex Plugin that'll
+    // take care of this! 
+    if (anyOtherWorkers.length > 0) {
+      console.debug('dialpad-addon, ConferenceMonitor, handleOnlyTwoParticipants, Just me and another worker. No need to fiddle with endConferenceOnExit (Flex sets to true)');
+      return;
+    }
+
+    // Just me an some other non-worker participant. So set endConferenceOnExit to false for me - to allow non-graceful disconnect logic to 
+    // engage. Set other participant to true.
+    console.debug('dialpad-addon, ConferenceMonitor, handleOnlyTwoParticipants, Just me and some non-worker participant. Setting endConferenceOnExit to true for the other participant');
+    this.setEndConferenceOnExit(conferenceSid, participants.filter((p) => !p.isMyself), true);
+    console.debug('dialpad-addon, ConferenceMonitor, handleOnlyTwoParticipants, Waiting for Flex to do its native thing (setting endConferenceOnExit to true for my agent), so i can undo it');
     await this.waitForFlexNativeUpdate(task, myParticipant.callSid);
-    console.log('Done waiting, updating endConferenceOnExit to false for worker - to allow non-graceful agent disconnect handling');
-    const participantsToUpdate = [];
-    participantsToUpdate.push(myParticipant);
-    this.setEndConferenceOnExit(conferenceSid, participantsToUpdate, false);
-    // NOTE: Flex natively takes care of the other remaining participant getting set to true (TODO: Validate when other participant is non-customer)
-    
+    console.debug('dialpad-addon, ConferenceMonitor, handleOnlyTwoParticipants, Done waiting, updating endConferenceOnExit to false for my worker participant - to allow non-graceful agent disconnect handling');
+    this.setEndConferenceOnExit(conferenceSid, participants.filter((p) => p.isMyself), false);    
   }
 
   waitForFlexNativeUpdate = (task, participantCallSid) => {
@@ -98,27 +135,20 @@ class ConferenceMonitor extends React.Component {
         const { conference } = task;
   
         if (!this.isTaskActive(task)) {
-          console.debug(
-            "waitForFlexNativeUpdate > Call canceled, clearing waitForUpdateInterval"
-          );
+          console.debug("dialpad-addon, ConferenceMonitor, waitForFlexNativeUpdate > Call canceled, clearing waitForUpdateInterval");
           waitForUpdateInterval = clearInterval(waitForUpdateInterval);
           return;
         }
   
+        // TODO: Find a better way. 
         const participantLatest = await ConferenceService.fetchParticipant(conference.conferenceSid, participantCallSid);
 
-        console.debug('participantLatest', participantLatest);
-
         if (participantLatest.endConferenceOnExit !== true) {
-          console.debug(
-            "waitForFlexNativeUpdate > Flex has not yet updated the endConferenceOnExit flag for participant"
-          );
+          console.debug("dialpad-addon, ConferenceMonitor, waitForFlexNativeUpdate > Flex has not yet updated the endConferenceOnExit flag for participant");
           return;
         }
   
-        console.debug(
-          "waitForFlexNativeUpdate > Flex updated the endConferenceOnExit flag to true for participant"
-        );
+        console.debug("dialpad-addon, ConferenceMonitor, waitForFlexNativeUpdate > Flex updated the endConferenceOnExit flag to true for participant");
   
         waitForUpdateInterval = clearInterval(waitForUpdateInterval);
   
@@ -127,8 +157,7 @@ class ConferenceMonitor extends React.Component {
   
       setTimeout(() => {
         if (waitForUpdateInterval) {
-          console.debug(
-            `waitForFlexNativeUpdate > endConferenceOnExit wasn't set to true within ${
+          console.debug(`dialpad-addon, ConferenceMonitor, waitForFlexNativeUpdate > endConferenceOnExit wasn't set to true within ${
               maxWaitTimeMs / 1000
             } seconds`
           );
@@ -152,7 +181,7 @@ class ConferenceMonitor extends React.Component {
   setEndConferenceOnExit = async (conferenceSid, participants, endConferenceOnExit) => {
     const promises = [];
     participants.forEach(p => {
-      console.log(`setting endConferenceOnExit = ${endConferenceOnExit} for callSid: ${p.callSid} status: ${p.status}`);
+      console.debug(`dialpad-addon, ConferenceMonitor, setEndConferenceOnExit, setting endConferenceOnExit = ${endConferenceOnExit} for callSid: ${p.callSid} status: ${p.status}`);
       if (p.connecting) { return } //skip setting end conference on connecting parties as it will fail
       promises.push(
         ConferenceService.setEndConferenceOnExit(conferenceSid, p.callSid, endConferenceOnExit)
@@ -161,9 +190,9 @@ class ConferenceMonitor extends React.Component {
 
     try {
       await Promise.all(promises);
-      console.log(`endConferenceOnExit set to ${endConferenceOnExit} for ${participants.length} participants`);
+      console.debug(`dialpad-addon, ConferenceMonitor, setEndConferenceOnExit, endConferenceOnExit set to ${endConferenceOnExit} for ${participants.length} participants`);
     } catch (error) {
-      console.error(`Error setting endConferenceOnExit to ${endConferenceOnExit} for ${participants.length} participants\r\n`, error);
+      console.error(`dialpad-addon, ConferenceMonitor, setEndConferenceOnExit, Error setting endConferenceOnExit to ${endConferenceOnExit} for ${participants.length} participants\r\n`, error);
     }
   }
 
