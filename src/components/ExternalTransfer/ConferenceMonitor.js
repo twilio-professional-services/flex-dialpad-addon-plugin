@@ -3,11 +3,18 @@ import ConferenceService from '../../helpers/ConferenceService';
 
 class ConferenceMonitor extends React.Component {
   state = {
-    liveParticipantCount: 0
+    liveParticipantCount: 0,
+    stopMonitoring: false
   }
 
   componentDidUpdate() {
+
+    if (this.state.stopMonitoring) {
+      return;
+    }
+
     const { task } = this.props;
+
     const conference = task && (task.conference || {});
     const {
       conferenceSid,
@@ -29,7 +36,13 @@ class ConferenceMonitor extends React.Component {
 
     if (liveParticipantCount !== this.state.liveParticipantCount) {
       this.setState({ liveParticipantCount });
+
+      if (task.outgoingTransferObject && task.outgoingTransferObject.mode === 'COLD') {
+        console.debug('dialpad-addon, ConferenceMonitor, componentDidUpdate: Participant count changed following COLD transfer. Time to stop monitoring this task/conference');
+        this.setState({ stopMonitoring: true });
+      }
     }
+
   }
 
   hasUnknownParticipant = (participants = []) => {
