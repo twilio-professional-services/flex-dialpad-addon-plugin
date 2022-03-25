@@ -4,6 +4,7 @@ import ConferenceService from '../../helpers/ConferenceService';
 class ConferenceMonitor extends React.Component {
   state = {
     liveParticipantCount: 0,
+    liveWorkerCount: 0,
     stopMonitoring: false
   }
 
@@ -37,13 +38,22 @@ class ConferenceMonitor extends React.Component {
     if (liveParticipantCount !== this.state.liveParticipantCount) {
       this.setState({ liveParticipantCount });
 
-      if (task.outgoingTransferObject && task.outgoingTransferObject.mode === 'COLD') {
-        console.debug('dialpad-addon, ConferenceMonitor, componentDidUpdate: Participant count changed following COLD transfer. Time to stop monitoring this task/conference');
-        this.setState({ stopMonitoring: true });
+      if (liveWorkerCount !== this.state.liveWorkerCount) {
+        const previousLiveWorkerCount = this.state.liveWorkerCount;
+        this.setState({ liveWorkerCount });
+
+        const myParticipant = participants.find(p => p.isMyself);    
+        // If it was me that left, then stop monitoring at this point. Covers warm and cold transfers and generally stops Flex UI from tinkering
+        // once the agent is done with the call.
+        if (previousLiveWorkerCount > 0 && myParticipant.status === 'left') {
+          console.debug('dialpad-addon, ConferenceMonitor, componentDidUpdate: My participant left. Time to stop monitoring this task/conference');
+          this.setState({ stopMonitoring: true });
+        }
       }
     }
 
   }
+
 
   hasUnknownParticipant = (participants = []) => {
     return participants.some(p => p.participantType === 'unknown');
