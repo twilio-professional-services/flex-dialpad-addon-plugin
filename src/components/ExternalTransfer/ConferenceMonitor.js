@@ -4,6 +4,7 @@ import ConferenceService from '../../helpers/ConferenceService';
 class ConferenceMonitor extends React.Component {
   state = {
     liveParticipantCount: 0,
+    didMyWorkerJoinYet: false,
     stopMonitoring: false
   }
 
@@ -23,6 +24,8 @@ class ConferenceMonitor extends React.Component {
       participants = []
     } = conference;
     const liveParticipants = participants.filter(p => p.status === 'joined');
+    const myActiveParticipant = liveParticipants.find(p => p.isMyself);
+
 
     if (liveParticipantCount > 2 && this.state.liveParticipantCount <= 2) {
       if (this.shouldUpdateParticipants(participants, liveWorkerCount)) {
@@ -37,14 +40,19 @@ class ConferenceMonitor extends React.Component {
     if (liveParticipantCount !== this.state.liveParticipantCount) {      
       this.setState({ liveParticipantCount });
     }
+    
 
-    const myParticipant = participants.find(p => p.isMyself);
+    if (!this.state.didMyWorkerJoinYet && myActiveParticipant) {
+      // Store the fact that my worker has clearly joined the conference - for use later
+      this.setState({ didMyWorkerJoinYet: true });
+    }
 
-    // If it was me that left, then stop monitoring at this point. Covers warm and cold transfers and generally stops Flex UI from tinkering
-    // once the agent is done with the call.
-    if (myParticipant && myParticipant.status === 'left') {
-      console.debug('dialpad-addon, ConferenceMonitor, componentDidUpdate: My participant left. Time to stop monitoring this task/conference');
-      this.setState({ stopMonitoring: true });
+    if (this.state.didMyWorkerJoinYet && !myActiveParticipant) {
+      // My worker has clearly left since previously joining
+      // Time to stop monitoring at this point. Covers warm and cold transfers and generally stops Flex UI from tinkering
+      // once the agent is done with the call.
+      console.debug('dialpad-addon, ConferenceMonitor, componentDidUpdate: My participant left. Time to STOP monitoring this task/conference');
+      this.setState({ stopMonitoring: true, didMyWorkerJoinYet: false });
     }
 
   }
