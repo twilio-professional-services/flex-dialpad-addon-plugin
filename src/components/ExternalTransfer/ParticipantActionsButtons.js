@@ -72,13 +72,13 @@ class ParticipantActionsButtons extends React.Component {
           icon="Accept"
           className="ParticipantCanvas-AcceptAction"
           onClick={this.onKickParticipantConfirmClick}
-          themeOverride={this.props.theme.ParticipantsCanvas.ParticipantCanvas.Button}
+          variant='secondary'
         />
         <IconButton
           icon="Close"
           className="ParticipantCanvas-DeclineAction"
           onClick={this.hideKickConfirmation}
-          themeOverride={this.props.theme.ParticipantsCanvas.ParticipantCanvas.Button}
+          variant='secondary'
         />
       </React.Fragment>
     );
@@ -104,14 +104,14 @@ class ParticipantActionsButtons extends React.Component {
           className="ParticipantCanvas-HoldButton"
           disabled={!TaskHelper.canHold(task) || participant.status !== 'joined'}
           onClick={this.onHoldParticipantClick}
-          themeOverride={theme.ParticipantsCanvas.ParticipantCanvas.Button}
+          variant='secondary'
           title={holdParticipantTooltip}
         />
         <IconButton
           icon="Hangup"
           className="ParticipantCanvas-HangupButton"
           onClick={this.showKickConfirmation}
-          themeOverride={theme.ParticipantsCanvas.ParticipantCanvas.HangUpButton}
+          variant='destructive'
           title={kickParticipantTooltip}
         />
       </React.Fragment>

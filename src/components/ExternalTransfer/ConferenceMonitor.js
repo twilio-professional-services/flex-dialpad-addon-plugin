@@ -24,7 +24,7 @@ class ConferenceMonitor extends React.Component {
       participants = []
     } = conference;
     const liveParticipants = participants.filter(p => p.status === 'joined');
-    const myActiveParticipant = liveParticipants.find(p => p.isMyself);
+    const myActiveParticipant = liveParticipants.find(p => p.isCurrentWorker);
 
 
     if (liveParticipantCount > 2 && this.state.liveParticipantCount <= 2) {

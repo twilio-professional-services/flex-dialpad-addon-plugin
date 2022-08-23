@@ -1,10 +1,8 @@
 import React from 'react';
 
 import sharedTheme from '../../styling/theme.js';
-import FormControl from '@material-ui/core/FormControl';
 import Select from 'react-select';
-import Button from '@material-ui/core/Button';
-import { Icon } from '@twilio/flex-ui';
+import { IconButton } from '@twilio/flex-ui';
 import { withStyles } from '@material-ui/core/styles';
 import { makeInternalCall } from './index';
 import { debounce } from 'lodash';
@@ -109,7 +107,7 @@ class InternalDialpad extends React.Component {
             <div className={classes.boxDialpad}>
                 <div className={classes.titleAgentDialpad}>Call Agent</div>
                 <div className={classes.subtitleDialpad}>Select agent</div>
-                <FormControl className={classes.formControl}>
+                <div className={classes.formControl}>
                     <Select 
                         className="basic-single"
                         classNamePrefix="select"
@@ -124,17 +122,13 @@ class InternalDialpad extends React.Component {
                         value={this.state.selectedWorker || null}
                     />
                     <div className={classes.buttonAgentDialpad}>
-                        <Button 
-                            variant="contained" 
-                            color="primary" 
+                        <IconButton
+                            variant='primary'
+                            icon='Call'
                             disabled={!this.state.selectedWorker} 
-                            onClick={this.makeCall}
-                            className={classes.dialPadBtn}
-                        >
-                            <Icon icon="Call"/>
-                        </Button>
+                            onClick={this.makeCall} />
                     </div>
-                </FormControl>
+                </div>
             </div>
         )
     }
