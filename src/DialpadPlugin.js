@@ -1,4 +1,4 @@
-import { FlexPlugin } from 'flex-plugin';
+import { FlexPlugin } from '@twilio/flex-plugin';
 
 import registerCustomActions from './customActions';
 import registerCustomNotifications from './notifications';
