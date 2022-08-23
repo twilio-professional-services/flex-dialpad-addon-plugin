@@ -116,7 +116,7 @@ export default (manager) => {
     }
 
     // check if worker hanging up is last worker on the call
-    if (conference.liveWorkerCount === 1) {
+    if (conference && conference.liveWorkerCount === 1) {
 
       //if so, ensure no other participants are on hold as 
       //no external parties will be able to remove them from being on hold.

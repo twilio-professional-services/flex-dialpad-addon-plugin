@@ -116,9 +116,11 @@ const ConferenceDialog = (props) => {
       <ModalFooter>
         <ModalFooterActions>
           <Button variant="secondary" onClick={handleClose}>
-            Cancel
+            {Manager.getInstance().strings.DIALPADExternalTransferPhoneNumberPopupCancel}
           </Button>
-          <Button variant="primary" onClick={handleDialButton}>Submit</Button>
+          <Button variant="primary" onClick={handleDialButton}>
+            {Manager.getInstance().strings.DIALPADExternalTransferPhoneNumberPopupDial}
+          </Button>
         </ModalFooterActions>
       </ModalFooter>
     </Modal>

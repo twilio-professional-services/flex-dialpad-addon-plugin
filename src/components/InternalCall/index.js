@@ -6,7 +6,7 @@ export const loadInternalCallInterface = (flex, manager) => {
 }
 
 export const makeInternalCall = ({ 
-    manager, selectedWorker, workerList
+    manager, selectedWorker
 }) => {
     const { 
         workflow_sid, 
@@ -15,24 +15,23 @@ export const makeInternalCall = ({
 
     const { REACT_APP_TASK_CHANNEL_SID: taskChannelSid } = process.env;
 
-    const { attributes: { contact_uri, full_name: fromFullName }, name: fromName } = 
+    const { attributes: { contact_uri: from_uri, full_name: fromFullName }, name: fromName } = 
         manager.workerClient;
 
-    const { attributes: { full_name }, friendly_name } = 
-        workerList.find(worker => worker.attributes.contact_uri === selectedWorker);
+    const { attributes: { full_name, contact_uri: target_uri }, friendly_name } = selectedWorker;
 
     manager.workerClient.createTask(
-        selectedWorker, 
-        contact_uri, 
+        target_uri, 
+        from_uri, 
         workflow_sid, 
         queue_sid,
         {
             attributes: { 
-                to: selectedWorker,
+                to: target_uri,
                 direction: 'outbound',
                 name: full_name || friendly_name,
                 fromName: fromFullName || fromName,
-                targetWorker: contact_uri,
+                targetWorker: from_uri,
                 autoAnswer: 'true',
                 client_call: true
             },
