@@ -3,6 +3,8 @@
 This plugin was upgraded to the latest version of the Plugin Builder (v4), now part of the Twilio CLI.
 See: https://www.twilio.com/docs/flex/developer/plugins/migrate
 
+**For the Flex UI 2.x version of this plugin, see [the flex-ui-v2 branch](https://github.com/twilio-professional-services/flex-dialpad-addon-plugin/tree/flex-ui-v2).**
+
 The native Flex Dialpad does not support agent-to-agent direct calls or external transfers yet. This plugin is meant to be an add-on to the native Flex Diapad, adding both agent-to-agent direct calls and external transfers.
 
 ## Flex plugin
