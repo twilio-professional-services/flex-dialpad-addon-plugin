@@ -33,8 +33,8 @@ export const loadExternalTransferInterface = (flex, manager) => {
 	flex.CallCanvas.Content.add(<ConferenceMonitor
 		key="conference-monitor"
 	/>, { sortOrder: 999 });
-// TODO TEMP FIX below
-	const isUnknownParticipant = props => (!props.participant.participantType || props.participant.participantType === 'unknown');
+
+	const isUnknownParticipant = props => props.participant.participantType === 'unknown';
 	const isNotTransferParticipant = props => props.participant.participantType !== 'transfer';
 
 	// This section is for the full width ParticipantCanvas
