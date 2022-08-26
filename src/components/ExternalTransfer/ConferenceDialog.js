@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Actions, withTheme, Manager, withTaskContext } from '@twilio/flex-ui';
-import ConferenceService from '../../helpers/ConferenceService';
+import ConferenceService from '../../services/ConferenceService';
 
 import {useUID} from '@twilio-paste/core/uid-library';
 import {Box} from '@twilio-paste/core/box';

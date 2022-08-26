@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ConferenceService from '../../helpers/ConferenceService';
+import ConferenceService from '../../services/ConferenceService';
 
 class ConferenceMonitor extends React.Component {
   state = {

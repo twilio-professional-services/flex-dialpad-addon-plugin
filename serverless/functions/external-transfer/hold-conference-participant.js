@@ -1,33 +1,63 @@
 const TokenValidator = require('twilio-flex-token-validator').functionValidator;
-
-let path = Runtime.getFunctions()['dialpad-utils'].path;
-let assets = require(path);
+const ParameterValidator = require(Runtime.getFunctions()['common/helpers/parameter-validator'].path);
+const ConferenceOperations = require(Runtime.getFunctions()['common/twilio-wrappers/conference-participant'].path);
 
 exports.handler = TokenValidator(async (context, event, callback) => {
-  const {
-    conference,
-    participant,
-    hold
-  } = event;
 
-  console.log(`${hold ? 'Holding' : 'Unholding'} participant ${participant} `
-    + `in conference ${conference}`);
+  const scriptName = arguments.callee.name;
+  const response = new Twilio.Response();
+  const requiredParameters = [
+      { key: 'conference', purpose: 'unique ID of conference to update' },
+      { key: 'participant', purpose: 'unique ID of participant to update' },
+      { key: 'hold', purpose: 'whether to hold or unhold the participant' },
+  ];
+  const parameterError = ParameterValidator.validate(context.PATH, event, requiredParameters);
 
-  const client = context.getTwilioClient();
+  response.appendHeader('Access-Control-Allow-Origin', '*');
+  response.appendHeader('Access-Control-Allow-Methods', 'OPTIONS POST');
+  response.appendHeader('Content-Type', 'application/json');
+  response.appendHeader('Access-Control-Allow-Headers', 'Content-Type');
+  
+  if (parameterError) {
+      console.error(`${scriptName} invalid parameters passed`);
+      response.setStatusCode(400);
+      response.setBody({ data: null, message: parameterError });
+      callback(null, response);
+      return;
+  }
 
-  const participantsResponse = await client
-    .conferences(conference)
-    .participants(participant)
-    .update({
-      hold,
-    });
+  try {
+    const {
+        conference,
+        participant,
+        hold
+    } = event;
+    
+    const result = await ConferenceOperations.holdParticipant(
+      {
+        context,
+        scriptName,
+        conference,
+        participant,
+        hold: hold === 'true',
+        attempts: 0
+      });
 
-  console.log(`Participant ${participant} updated in conference \
-  ${conference}. Participant response properties:`);
+    const { success, participantsResponse, status } = result;
 
-  Object.keys(participantsResponse).forEach(key => {
-    console.log(`  ${key}:`, participantsResponse[key]);
-  });
+    response.setStatusCode(status);
+    response.setBody({ success, participantsResponse });
+    callback(null, response);
 
-  callback(null, assets.response("json", participantsResponse));
+  } catch (error) {
+
+    console.error(`Unexpected error occurred in ${scriptName}: ${error}`);
+    response.setStatusCode(500);
+    response.setBody(
+      { 
+        success: false, 
+        message: error 
+      });
+    callback(null, response);
+  }
 });

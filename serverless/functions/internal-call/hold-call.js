@@ -1,6 +1,6 @@
 const TokenValidator = require('twilio-flex-token-validator').functionValidator;
 
-let path = Runtime.getFunctions()['dialpad-utils'].path;
+let path = Runtime.getFunctions()['internal-call/dialpad-utils'].path;
 let assets = require(path);
 
 exports.handler = TokenValidator( async (context, event, callback) => {

@@ -1,7 +1,7 @@
 import { Actions, Notifications, StateHelper } from '@twilio/flex-ui';
 import { acceptInternalTask, rejectInternalTask, isInternalCall, toggleHoldInternalCall } from './internalCall';
 import { kickExternalTransferParticipant } from './externalTransfer';
-import ConferenceService from '../helpers/ConferenceService';
+import ConferenceService from '../services/ConferenceService';
 import { CustomNotifications } from '../notifications';
 
 export default (manager) => {
