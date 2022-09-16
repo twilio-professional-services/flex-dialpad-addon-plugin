@@ -5,18 +5,20 @@ import { withTheme } from '@twilio/flex-ui';
 import ConferenceService from '../../services/ConferenceService';
 
 const Name = styled('div')`
-  font-size: 14px;
-  font-weight: bold;
-  margin-top: 10px;
-  margin-bottom: 4px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1.25rem;
+  margin-top: 0.75rem;
+  margin-bottom: 0.25rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 `;
 
 const NameListItem = styled('div')`
-  font-size: 12px;
-  font-weight: bold;
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1.25rem;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -31,7 +33,7 @@ class ParticipantName extends React.Component {
     const { participant, task } = this.props;
 
     if (participant.participantType === 'customer') {
-      this.setState({ name: task.attributes.outbound_to || task.attributes.name });
+      this.setState({ name: task.attributes.outbound_to || task.attributes.name || task.attributes.from });
       return;
     }
 
