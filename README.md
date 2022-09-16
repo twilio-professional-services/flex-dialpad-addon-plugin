@@ -91,6 +91,29 @@ Before using this plugin you must first create a dedicated TaskRouter workflow o
 
 <img width="700px" src="screenshots/outbound-filter.png"/>
 
+## Outbound Call Configuration
+
+When conferencing in an external party, the default outbound call settings are used for caller ID. If this has not yet been configured, you will encounter errors. This can be updated using the Flex Configuration API:
+
+```
+POST https://flex-api.twilio.com/v1/Configuration
+Authorization: Basic {base64-encoded Twilio Account SID : Auth Token}
+Content-Type: application/json
+
+{
+  "account_sid": "Enter your Twilio Account SID here",
+  "outbound_call_flows": {
+    "default": {
+      "workflow_sid": "WWxxxc",
+      "enabled": true,
+      "queue_sid": "WQxxx",
+      "caller_id": "+1xxx",
+      "location": "US"
+    }
+  },
+}
+```
+
 ## Twilio Serverless 
 
 You will need the [Twilio CLI](https://www.twilio.com/docs/twilio-cli/quickstart) and the [serverless plugin](https://www.twilio.com/docs/labs/serverless-toolkit/getting-started) to deploy the functions inside the ```serverless``` folder of this project. You can install the necessary dependencies with the following commands:
