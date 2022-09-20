@@ -1,63 +1,25 @@
 import { Actions, Notifications, StateHelper } from '@twilio/flex-ui';
-import { acceptInternalTask, rejectInternalTask, isInternalCall, toggleHoldInternalCall } from './internalCall';
+import * as InternalCallActions from './internalCall';
 import { kickExternalTransferParticipant } from './externalTransfer';
 import ConferenceService from '../services/ConferenceService';
 import { CustomNotifications } from '../notifications';
 
 export default (manager) => {
 
-  Actions.addListener('beforeAcceptTask', (payload, abortFunction) => {
-
-    const reservation = payload.task.sourceObject;
-
-    if (isInternalCall(payload)) {
-
-      abortFunction();
-
-      acceptInternalTask({ reservation, payload });
-
-    }
-
+  Actions.addListener('beforeAcceptTask', async (payload, abortFunction) => {
+    await InternalCallActions.beforeAcceptTask(payload, abortFunction);
   })
 
-  Actions.addListener('beforeRejectTask', (payload, abortFunction) => {
-
-    if (isInternalCall(payload)) {
-
-      abortFunction();
-
-      rejectInternalTask({ manager, payload });
-
-    }
-
+  Actions.addListener('beforeRejectTask', async (payload, abortFunction) => {
+    await InternalCallActions.beforeRejectTask(payload, abortFunction);
   })
 
-  const holdCall = (payload, hold) => {
-    return new Promise((resolve, reject) => {
-
-      const task = payload.task;
-
-      if (isInternalCall(payload)) {
-
-        toggleHoldInternalCall({
-          task, manager, hold, resolve, reject
-        });
-
-      } else {
-
-        resolve();
-
-      }
-
-    })
-  }
-
-  Actions.addListener('beforeHoldCall', (payload) => {
-    return holdCall(payload, true)
+  Actions.addListener('beforeHoldCall', async (payload) => {
+    await InternalCallActions.beforeHoldCall(payload);
   })
 
-  Actions.addListener('beforeUnholdCall', (payload) => {
-    return holdCall(payload, false)
+  Actions.addListener('beforeUnholdCall', async (payload) => {
+    await InternalCallActions.beforeUnholdCall(payload);
   })
 
   Actions.addListener('beforeHoldParticipant', (payload, abortFunction) => {
