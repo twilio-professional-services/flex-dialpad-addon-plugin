@@ -1,3 +1,4 @@
+import ConferenceService from '../../services/ConferenceService';
 import InternalCallService from '../../services/InternalCallService';
 
 export const isInternalCall = payload => 
@@ -29,7 +30,16 @@ export const beforeHoldCall = async (payload) => {
     return false;
   }
   
-  await InternalCallService.toggleHoldInternalCall(payload.task, true);
+  const { task } = payload;
+  const conference = task.attributes.conference
+    ? task.attributes.conference.sid
+    : task.attributes.conferenceSid;
+  
+  const participant = task.attributes.conference.participants
+    ? task.attributes.conference.participants.worker
+    : task.attributes.worker_call_sid;
+  
+  await ConferenceService.holdParticipant(conference, participant);
   return true;
 }
 
@@ -38,6 +48,15 @@ export const beforeUnholdCall = async (payload) => {
     return false;
   }
   
-  await InternalCallService.toggleHoldInternalCall(payload.task, false);
+  const { task } = payload;
+  const conference = task.attributes.conference
+    ? task.attributes.conference.sid
+    : task.attributes.conferenceSid;
+  
+  const participant = task.attributes.conference.participants
+    ? task.attributes.conference.participants.worker
+    : task.attributes.worker_call_sid;
+  
+  await ConferenceService.unholdParticipant(conference, participant);
   return true;
 }

@@ -2,7 +2,7 @@ const TokenValidator = require('twilio-flex-token-validator').functionValidator;
 const ParameterValidator = require(Runtime.getFunctions()['common/helpers/parameter-validator'].path);
 const VoiceOperations = require(Runtime.getFunctions()['common/twilio-wrappers/programmable-voice'].path);
 
-exports.handler = TokenValidator(async (context, event, callback) => {
+exports.handler = TokenValidator(async function getCallProperties(context, event, callback) {
 
   const scriptName = arguments.callee.name;
   const response = new Twilio.Response();

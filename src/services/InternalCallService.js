@@ -55,43 +55,6 @@ class InternalCallService extends ApiService {
         });
     });
   };
-
-  toggleHoldInternalCall = async (task, hold) => {
-    return new Promise((resolve, reject) => {
-      const conference = task.attributes.conference
-        ? task.attributes.conference.sid
-        : task.attributes.conferenceSid;
-
-      const participant = task.attributes.conference.participants
-        ? task.attributes.conference.participants.worker
-        : task.attributes.worker_call_sid;
-
-      const encodedParams = {
-        conference,
-        participant,
-        hold,
-        Token: encodeURIComponent(
-          this.manager.store.getState().flex.session.ssoTokenPayload.token
-        ),
-      };
-
-      this.fetchJsonWithReject(
-        `${this.serverlessDomain}/internal-call/hold-call`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: this.buildBody(encodedParams),
-        }
-      )
-        .then((response) => {
-          resolve(response);
-        })
-        .catch((error) => {
-          console.log(error);
-          reject(error);
-        });
-    });
-  };
 }
 
 const internalCallService = new InternalCallService();
