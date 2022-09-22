@@ -25,7 +25,7 @@ export const beforeRejectTask = async (payload, abortFunction) => {
   return true;
 }
 
-export const beforeHoldCall = async (payload) => {
+export const beforeHoldCall = async (payload, abortFunction) => {
   if (!isInternalCall(payload)) {
     return false;
   }
@@ -40,10 +40,11 @@ export const beforeHoldCall = async (payload) => {
     : task.attributes.worker_call_sid;
   
   await ConferenceService.holdParticipant(conference, participant);
+  abortFunction();
   return true;
 }
 
-export const beforeUnholdCall = async (payload) => {
+export const beforeUnholdCall = async (payload, abortFunction) => {
   if (!isInternalCall(payload)) {
     return false;
   }
@@ -58,5 +59,6 @@ export const beforeUnholdCall = async (payload) => {
     : task.attributes.worker_call_sid;
   
   await ConferenceService.unholdParticipant(conference, participant);
+  abortFunction();
   return true;
 }
