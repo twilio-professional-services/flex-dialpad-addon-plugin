@@ -2,7 +2,7 @@ const TokenValidator = require('twilio-flex-token-validator').functionValidator;
 const ParameterValidator = require(Runtime.getFunctions()['common/helpers/parameter-validator'].path);
 const ConferenceOperations = require(Runtime.getFunctions()['common/twilio-wrappers/conference-participant'].path);
 
-exports.handler = TokenValidator(async (context, event, callback) => {
+exports.handler = TokenValidator(async function updateConferenceParticipant(context, event, callback) {
 
   const scriptName = arguments.callee.name;
   const response = new Twilio.Response();

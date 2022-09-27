@@ -20,7 +20,7 @@ class ConferenceService extends ApiService {
         Token: encodeURIComponent(this.manager.store.getState().flex.session.ssoTokenPayload.token)
       }
 
-      this.fetchJsonWithReject(`${this.serverlessDomain}/external-transfer/hold-conference-participant`,
+      this.fetchJsonWithReject(`${this.serverlessDomain}/common/flex/programmable-voice/hold-conference-participant`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },

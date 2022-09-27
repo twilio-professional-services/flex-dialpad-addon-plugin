@@ -115,3 +115,4 @@ dist
 .pnp.*
 
 .twilio-functions
+.twiliodeployinfo
