@@ -49,6 +49,9 @@ Afterwards, install the dependencies by running `npm install`:
 ```bash
 cd 
 
+# Make sure you are no Node v14. It will fail on v16.
+nvm use 14
+
 # If you use npm
 npm install
 ```
