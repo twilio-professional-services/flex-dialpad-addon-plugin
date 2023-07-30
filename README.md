@@ -1,7 +1,9 @@
 # Native Flex Dialpad Add-on
 
 # Notice
-This plugin is no longer maintained as of September 27, 2022. Work to support this feature in Flex v2 has been transitioned to the [Twilio Professional Services Flex Project Template](https://github.com/twilio-professional-services/twilio-proserv-flex-project-template) in the form of the [conference feature](https://github.com/twilio-professional-services/twilio-proserv-flex-project-template/tree/main/plugin-flex-ts-template-v2/src/feature-library/conference) and the [internal call feature](https://github.com/twilio-professional-services/twilio-proserv-flex-project-template/tree/main/plugin-flex-ts-template-v2/src/feature-library/internal-call).
+
+> [!IMPORTANT]
+> This plugin is no longer maintained as of September 27, 2022. Work to support this feature in Flex v2 has been transitioned to the [Twilio Professional Services Flex Project Template](https://github.com/twilio-professional-services/twilio-proserv-flex-project-template) in the form of the [conference feature](https://github.com/twilio-professional-services/twilio-proserv-flex-project-template/tree/main/plugin-flex-ts-template-v2/src/feature-library/conference) and the [internal call feature](https://github.com/twilio-professional-services/twilio-proserv-flex-project-template/tree/main/plugin-flex-ts-template-v2/src/feature-library/internal-call).
 
 # Notes
 This plugin was upgraded to the latest version of the Plugin Builder (v4), now part of the Twilio CLI.
